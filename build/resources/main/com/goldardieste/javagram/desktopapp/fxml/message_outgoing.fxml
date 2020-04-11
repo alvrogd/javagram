@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
+
+
+<HBox minHeight="-Infinity" prefHeight="60.0" styleClass="message" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox minHeight="-Infinity" prefHeight="60.0">
+         <children>
+            <HBox minHeight="-Infinity" prefHeight="30.0">
+               <children>
+                  <TextFlow minHeight="30.0" minWidth="80.0" nodeOrientation="LEFT_TO_RIGHT" styleClass="outgoingMessage">
+                     <children>
+                        <Label styleClass="messageText" text="Label" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0">
+               <children>
+                  <Label styleClass="dateText" text="11:15 PM" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>

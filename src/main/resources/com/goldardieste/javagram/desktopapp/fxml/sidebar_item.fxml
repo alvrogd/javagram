@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="340.0" styleClass="sidebarItem" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="250.0">
+         <children>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="250.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="250.0">
+                     <Label styleClass="headerText" text="Item header" />
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="250.0">
+                     <Label styleClass="descriptionText" text="Item description" />
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+         <VBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="250.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="90.0">
+               <Label styleClass="dateText" text="11:55" />
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="250.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="90.0">
+            </HBox>
+         </VBox>
+   </children>
+</HBox>

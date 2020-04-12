@@ -14075,30 +14075,13 @@
 															"height": 13,
 															"text": "-username: String",
 															"horizontalAlignment": 0
-														},
-														{
-															"_type": "UMLAttributeView",
-															"_id": "AAAAAAFxPuSQf8JdBEs=",
-															"_parent": {
-																"$ref": "AAAAAAFxO6yZhIHFanc="
-															},
-															"model": {
-																"$ref": "AAAAAAFxPuSQMcJa958="
-															},
-															"font": "Arial;13;0",
-															"left": 181,
-															"top": 379,
-															"width": 562.48486328125,
-															"height": 13,
-															"text": "-password: String",
-															"horizontalAlignment": 0
 														}
 													],
 													"font": "Arial;13;0",
 													"left": 176,
 													"top": 359,
 													"width": 572.48486328125,
-													"height": 38
+													"height": 23
 												},
 												{
 													"_type": "UMLOperationCompartmentView",
@@ -14121,7 +14104,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 402,
+															"top": 387,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+getFriend(username: String): RemoteUser",
@@ -14138,7 +14121,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 417,
+															"top": 402,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+getFriends(status: StatusType): RemoteUser[0..*]",
@@ -14155,7 +14138,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 432,
+															"top": 417,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+addFriend(remoteUser: String, status, StatusType)",
@@ -14172,7 +14155,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 447,
+															"top": 432,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+addFriends(remoteUsers: String[0..*], status: StatusType)",
@@ -14189,7 +14172,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 462,
+															"top": 447,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+removeFriend(remoteUser: String)",
@@ -14206,7 +14189,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 477,
+															"top": 462,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+checkFriendStatus(status: StatusType): Boolean",
@@ -14223,7 +14206,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 492,
+															"top": 477,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+updateFriendStatus(remoteUser: String, status: StatusType)",
@@ -14240,7 +14223,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 507,
+															"top": 492,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+prepareTunnel(remoteUser: String): IRemoteUserTunnel",
@@ -14257,7 +14240,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 522,
+															"top": 507,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+storeRemoteUserTunnel(tunnel: IRemoteUserTunnel)",
@@ -14274,7 +14257,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 537,
+															"top": 522,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+closeTunnels(remoteUser: String)",
@@ -14291,7 +14274,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 552,
+															"top": 537,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+sendMessage(remoteUser: String, message: String)",
@@ -14308,7 +14291,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 181,
-															"top": 567,
+															"top": 552,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+replyChatRequest(remoteUser: String, remoteTunnel: IRemoteUserTunnel): IRemoteUserTunnel",
@@ -14317,7 +14300,7 @@
 													],
 													"font": "Arial;13;0",
 													"left": 176,
-													"top": 397,
+													"top": 382,
 													"width": 572.48486328125,
 													"height": 188
 												},
@@ -14359,7 +14342,7 @@
 											"left": 176,
 											"top": 334,
 											"width": 572.48486328125,
-											"height": 251,
+											"height": 236,
 											"nameCompartment": {
 												"$ref": "AAAAAAFxO6yZhIHAAa4="
 											},
@@ -14405,7 +14388,7 @@
 															"visible": false,
 															"font": "Arial;13;0",
 															"left": -144,
-															"top": 576,
+															"top": 492,
 															"height": 13
 														},
 														{
@@ -14416,7 +14399,7 @@
 															},
 															"font": "Arial;13;1",
 															"left": 221,
-															"top": 759,
+															"top": 775,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "SessionManager"
@@ -14430,7 +14413,7 @@
 															"visible": false,
 															"font": "Arial;13;0",
 															"left": -144,
-															"top": 576,
+															"top": 492,
 															"width": 97.525390625,
 															"height": 13,
 															"text": "(from ClientSide)"
@@ -14444,14 +14427,14 @@
 															"visible": false,
 															"font": "Arial;13;0",
 															"left": -144,
-															"top": 576,
+															"top": 492,
 															"height": 13,
 															"horizontalAlignment": 1
 														}
 													],
 													"font": "Arial;13;0",
 													"left": 216,
-													"top": 752,
+													"top": 768,
 													"width": 572.48486328125,
 													"height": 25,
 													"stereotypeLabel": {
@@ -14476,81 +14459,11 @@
 													"model": {
 														"$ref": "AAAAAAFxO7f/mYIyYo8="
 													},
-													"subViews": [
-														{
-															"_type": "UMLAttributeView",
-															"_id": "AAAAAAFxO7kjGYJi3LU=",
-															"_parent": {
-																"$ref": "AAAAAAFxO7f/moI6l+g="
-															},
-															"model": {
-																"$ref": "AAAAAAFxO7ki1oJfi5w="
-															},
-															"font": "Arial;13;0",
-															"left": 221,
-															"top": 782,
-															"width": 562.48486328125,
-															"height": 13,
-															"text": "-rmiRemoteAddres: String",
-															"horizontalAlignment": 0
-														},
-														{
-															"_type": "UMLAttributeView",
-															"_id": "AAAAAAFxO7lQcIJpDs8=",
-															"_parent": {
-																"$ref": "AAAAAAFxO7f/moI6l+g="
-															},
-															"model": {
-																"$ref": "AAAAAAFxO7lQU4JmLOw="
-															},
-															"font": "Arial;13;0",
-															"left": 221,
-															"top": 797,
-															"width": 562.48486328125,
-															"height": 13,
-															"text": "-rmiRemotePort: Integer",
-															"horizontalAlignment": 0
-														},
-														{
-															"_type": "UMLAttributeView",
-															"_id": "AAAAAAFxO7mj+4Jw7LE=",
-															"_parent": {
-																"$ref": "AAAAAAFxO7f/moI6l+g="
-															},
-															"model": {
-																"$ref": "AAAAAAFxO7mjxIJtdh4="
-															},
-															"font": "Arial;13;0",
-															"left": 221,
-															"top": 812,
-															"width": 562.48486328125,
-															"height": 13,
-															"text": "-rmiRemoteIdentifier: String",
-															"horizontalAlignment": 0
-														},
-														{
-															"_type": "UMLAttributeView",
-															"_id": "AAAAAAFxO8N4n4hXaC8=",
-															"_parent": {
-																"$ref": "AAAAAAFxO7f/moI6l+g="
-															},
-															"model": {
-																"$ref": "AAAAAAFxO8N4V4hUTsY="
-															},
-															"font": "Arial;13;0",
-															"left": 221,
-															"top": 827,
-															"width": 562.48486328125,
-															"height": 13,
-															"text": "-instance: SessionManager",
-															"horizontalAlignment": 0
-														}
-													],
 													"font": "Arial;13;0",
 													"left": 216,
-													"top": 777,
+													"top": 793,
 													"width": 572.48486328125,
-													"height": 68
+													"height": 10
 												},
 												{
 													"_type": "UMLOperationCompartmentView",
@@ -14573,7 +14486,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 850,
+															"top": 808,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+isInitiated(): Boolean",
@@ -14590,7 +14503,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 865,
+															"top": 823,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+login(username: String, password: String): Boolean",
@@ -14607,7 +14520,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 880,
+															"top": 838,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+signUp(username: String, password: String): Boolean",
@@ -14624,7 +14537,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 895,
+															"top": 853,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+disconnect(): Boolean",
@@ -14641,7 +14554,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 910,
+															"top": 868,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+retrieveFriends()",
@@ -14658,7 +14571,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 925,
+															"top": 883,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+retrieveFriends(status: StatusType)",
@@ -14675,10 +14588,10 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 940,
+															"top": 898,
 															"width": 562.48486328125,
 															"height": 13,
-															"text": "+initiateChat(remoteUser: String)",
+															"text": "+initiateChat(remoteUser: String): Boolean",
 															"horizontalAlignment": 0
 														},
 														{
@@ -14692,7 +14605,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 955,
+															"top": 913,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+sendMessage(remoteUser: String, message: String)",
@@ -14709,7 +14622,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 970,
+															"top": 928,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+requestFriendship(remoteUser: String)",
@@ -14726,7 +14639,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 985,
+															"top": 943,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+acceptFriendship(remoteUser: String)",
@@ -14743,7 +14656,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 1000,
+															"top": 958,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+rejectFriendship(remoteUser: String)",
@@ -14760,7 +14673,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 1015,
+															"top": 973,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+endFriendship(remoteUser: String)",
@@ -14777,7 +14690,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 221,
-															"top": 1030,
+															"top": 988,
 															"width": 562.48486328125,
 															"height": 13,
 															"text": "+replyChatRequest(remoteUser: String, remoteTunnel: IRemoteUserTunnel): IRemoteUserTunnel",
@@ -14786,7 +14699,7 @@
 													],
 													"font": "Arial;13;0",
 													"left": 216,
-													"top": 845,
+													"top": 803,
 													"width": 572.48486328125,
 													"height": 203
 												},
@@ -14802,7 +14715,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": -72,
-													"top": 288,
+													"top": 246,
 													"width": 10,
 													"height": 10
 												},
@@ -14818,7 +14731,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": -72,
-													"top": 288,
+													"top": 246,
 													"width": 10,
 													"height": 10
 												}
@@ -14826,9 +14739,9 @@
 											"font": "Arial;13;0",
 											"containerChangeable": true,
 											"left": 216,
-											"top": 752,
+											"top": 768,
 											"width": 572.48486328125,
-											"height": 296,
+											"height": 238,
 											"showProperty": false,
 											"nameCompartment": {
 												"$ref": "AAAAAAFxO7f/moI1XEw="
@@ -16205,7 +16118,7 @@
 															"top": 95,
 															"width": 209.16162109375,
 															"height": 13,
-															"text": "RemoteUserTunnel"
+															"text": "LocalUserTunnel"
 														},
 														{
 															"_type": "LabelView",
@@ -16990,7 +16903,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 270,
-													"top": 1072,
+													"top": 1051,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 15,
@@ -17011,7 +16924,7 @@
 													"visible": null,
 													"font": "Arial;13;0",
 													"left": 285,
-													"top": 1072,
+													"top": 1051,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 30,
@@ -17032,7 +16945,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 241,
-													"top": 1073,
+													"top": 1052,
 													"height": 13,
 													"alpha": -1.5707963267948966,
 													"distance": 15,
@@ -17053,7 +16966,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 271,
-													"top": 1066,
+													"top": 1024,
 													"height": 13,
 													"alpha": 0.5235987755982988,
 													"distance": 30,
@@ -17074,7 +16987,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 284,
-													"top": 1069,
+													"top": 1027,
 													"height": 13,
 													"alpha": 0.7853981633974483,
 													"distance": 40,
@@ -17095,7 +17008,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 243,
-													"top": 1062,
+													"top": 1020,
 													"height": 13,
 													"alpha": -0.5235987755982988,
 													"distance": 25,
@@ -17202,7 +17115,7 @@
 											"tail": {
 												"$ref": "AAAAAAFxO7f/moI0e68="
 											},
-											"points": "256:1047;256:1112",
+											"points": "256:1005;256:1112",
 											"showVisibility": true,
 											"nameLabel": {
 												"$ref": "AAAAAAFxPyhmV9VUDhQ="
@@ -17338,11 +17251,64 @@
 													"model": {
 														"$ref": "AAAAAAFxRhVxaeFzlMU="
 													},
+													"subViews": [
+														{
+															"_type": "UMLAttributeView",
+															"_id": "AAAAAAFxai1C2MzCSFE=",
+															"_parent": {
+																"$ref": "AAAAAAFxRhVxauF73rs="
+															},
+															"model": {
+																"$ref": "AAAAAAFxai1Cc8yzvYw="
+															},
+															"font": "Arial;13;0",
+															"left": 1045,
+															"top": 742,
+															"width": 618.12841796875,
+															"height": 13,
+															"text": "-rmiRemoteAddress: String",
+															"horizontalAlignment": 0
+														},
+														{
+															"_type": "UMLAttributeView",
+															"_id": "AAAAAAFxai1Vt81xeeA=",
+															"_parent": {
+																"$ref": "AAAAAAFxRhVxauF73rs="
+															},
+															"model": {
+																"$ref": "AAAAAAFxai1Vhs1iVD4="
+															},
+															"font": "Arial;13;0",
+															"left": 1045,
+															"top": 757,
+															"width": 618.12841796875,
+															"height": 13,
+															"text": "-rmiRemotePort: Integer",
+															"horizontalAlignment": 0
+														},
+														{
+															"_type": "UMLAttributeView",
+															"_id": "AAAAAAFxai18J85oRic=",
+															"_parent": {
+																"$ref": "AAAAAAFxRhVxauF73rs="
+															},
+															"model": {
+																"$ref": "AAAAAAFxai171M5Zylc="
+															},
+															"font": "Arial;13;0",
+															"left": 1045,
+															"top": 772,
+															"width": 618.12841796875,
+															"height": 13,
+															"text": "-rmiRemoteIdentifier: String",
+															"horizontalAlignment": 0
+														}
+													],
 													"font": "Arial;13;0",
 													"left": 1040,
 													"top": 737,
 													"width": 628.12841796875,
-													"height": 10
+													"height": 53
 												},
 												{
 													"_type": "UMLOperationCompartmentView",
@@ -17365,7 +17331,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 752,
+															"top": 795,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+login(username: String, password: String): UserToken",
@@ -17382,7 +17348,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 767,
+															"top": 810,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+signUp(username: String, password: String): UserToken",
@@ -17399,7 +17365,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 782,
+															"top": 825,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+disconnect(token: UserToken)",
@@ -17416,7 +17382,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 797,
+															"top": 840,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+retrieveFriends(token: UserToken): RemoteUser[0..*]",
@@ -17433,7 +17399,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 812,
+															"top": 855,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+retrieveFriends(token: UserToken, status: StatusType): RemoteUser[0..*]",
@@ -17450,7 +17416,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 827,
+															"top": 870,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+initiateChat(token: UserToken, localTunnel: IRemoteUserTunnel, remoteUser: String): IRemoteUserTunnel",
@@ -17467,7 +17433,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 842,
+															"top": 885,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+requestFriendShip(token: UserToken, remoteUser: String)",
@@ -17484,7 +17450,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 857,
+															"top": 900,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+acceptFriendship(token: UserToken, remoteUser: String)",
@@ -17501,7 +17467,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 872,
+															"top": 915,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+rejectFriendship(token: UserToken, remoteUser: String)",
@@ -17518,7 +17484,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 887,
+															"top": 930,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+endFriendship(token: UserToken, remoteUser: String)",
@@ -17535,7 +17501,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 902,
+															"top": 945,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+replyChatRequest(remoteUser: String, remoteTunnel: IRemoteUserTunnel): IRemoteUserTunnel",
@@ -17552,7 +17518,7 @@
 															},
 															"font": "Arial;13;0",
 															"left": 1045,
-															"top": 917,
+															"top": 960,
 															"width": 618.12841796875,
 															"height": 13,
 															"text": "+updateFriendStatus(remoteUser: String, status: StatusType)",
@@ -17561,7 +17527,7 @@
 													],
 													"font": "Arial;13;0",
 													"left": 1040,
-													"top": 747,
+													"top": 790,
 													"width": 628.12841796875,
 													"height": 188
 												},
@@ -17603,7 +17569,7 @@
 											"left": 1040,
 											"top": 712,
 											"width": 628.12841796875,
-											"height": 223,
+											"height": 266,
 											"nameCompartment": {
 												"$ref": "AAAAAAFxRhVxauF2AsM="
 											},
@@ -17683,7 +17649,7 @@
 													},
 													"visible": false,
 													"font": "Arial;13;0",
-													"left": 394,
+													"left": 395,
 													"top": 662,
 													"height": 13,
 													"alpha": -1.5707963267948966,
@@ -17705,7 +17671,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 365,
-													"top": 720,
+													"top": 736,
 													"height": 13,
 													"alpha": 0.5235987755982988,
 													"distance": 30,
@@ -17726,7 +17692,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 351,
-													"top": 717,
+													"top": 733,
 													"height": 13,
 													"alpha": 0.7853981633974483,
 													"distance": 40,
@@ -17747,7 +17713,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 392,
-													"top": 724,
+													"top": 740,
 													"height": 13,
 													"alpha": -0.5235987755982988,
 													"distance": 25,
@@ -17767,7 +17733,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 282,
-													"top": 603,
+													"top": 588,
 													"width": 84.9189453125,
 													"height": 13,
 													"alpha": -1.1509163711448627,
@@ -17789,7 +17755,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 351,
-													"top": 606,
+													"top": 591,
 													"height": 13,
 													"alpha": -0.7853981633974483,
 													"distance": 40,
@@ -17808,7 +17774,7 @@
 													},
 													"font": "Arial;13;0",
 													"left": 389,
-													"top": 602,
+													"top": 587,
 													"width": 21.68359375,
 													"height": 13,
 													"alpha": 0.6719633244876285,
@@ -17854,7 +17820,7 @@
 											"tail": {
 												"$ref": "AAAAAAFxO7f/moI0e68="
 											},
-											"points": "380:752;380:584",
+											"points": "380:768;380:569",
 											"showVisibility": true,
 											"nameLabel": {
 												"$ref": "AAAAAAFxRhy9fPiMlKY="
@@ -18667,7 +18633,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 1379,
-													"top": 980,
+													"top": 1001,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 15,
@@ -18688,7 +18654,7 @@
 													"visible": null,
 													"font": "Arial;13;0",
 													"left": 1394,
-													"top": 980,
+													"top": 1001,
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 30,
@@ -18709,7 +18675,7 @@
 													"visible": false,
 													"font": "Arial;13;0",
 													"left": 1350,
-													"top": 981,
+													"top": 1002,
 													"height": 13,
 													"alpha": -1.5707963267948966,
 													"distance": 15,
@@ -18726,7 +18692,7 @@
 											"tail": {
 												"$ref": "AAAAAAFxRhVxauF1+zs="
 											},
-											"points": "1365:934;1365:1040",
+											"points": "1365:977;1365:1040",
 											"showVisibility": true,
 											"nameLabel": {
 												"$ref": "AAAAAAFxRo4sd0t3mvY="
@@ -19154,16 +19120,6 @@
 												"$ref": "AAAAAAFxO6yZg4G9n14="
 											},
 											"name": "username",
-											"visibility": "private",
-											"type": "String"
-										},
-										{
-											"_type": "UMLAttribute",
-											"_id": "AAAAAAFxPuSQMcJa958=",
-											"_parent": {
-												"$ref": "AAAAAAFxO6yZg4G9n14="
-											},
-											"name": "password",
 											"visibility": "private",
 											"type": "String"
 										}
@@ -19617,50 +19573,6 @@
 										}
 									],
 									"documentation": "The following data is needed to establish a connection with the remote RMI server:\n\n- Remote address\n- Remote port\n- Remote identifier\n\n\nThis class acts as a Facade that the GUI can use, or that the server listener can also use",
-									"attributes": [
-										{
-											"_type": "UMLAttribute",
-											"_id": "AAAAAAFxO7ki1oJfi5w=",
-											"_parent": {
-												"$ref": "AAAAAAFxO7f/mYIyYo8="
-											},
-											"name": "rmiRemoteAddres",
-											"visibility": "private",
-											"type": "String"
-										},
-										{
-											"_type": "UMLAttribute",
-											"_id": "AAAAAAFxO7lQU4JmLOw=",
-											"_parent": {
-												"$ref": "AAAAAAFxO7f/mYIyYo8="
-											},
-											"name": "rmiRemotePort",
-											"visibility": "private",
-											"type": "Integer"
-										},
-										{
-											"_type": "UMLAttribute",
-											"_id": "AAAAAAFxO7mjxIJtdh4=",
-											"_parent": {
-												"$ref": "AAAAAAFxO7f/mYIyYo8="
-											},
-											"name": "rmiRemoteIdentifier",
-											"visibility": "private",
-											"type": "String"
-										},
-										{
-											"_type": "UMLAttribute",
-											"_id": "AAAAAAFxO8N4V4hUTsY=",
-											"_parent": {
-												"$ref": "AAAAAAFxO7f/mYIyYo8="
-											},
-											"name": "instance",
-											"visibility": "private",
-											"type": {
-												"$ref": "AAAAAAFxO7f/mYIyYo8="
-											}
-										}
-									],
 									"operations": [
 										{
 											"_type": "UMLOperation",
@@ -19820,6 +19732,15 @@
 													},
 													"name": "remoteUser",
 													"type": "String"
+												},
+												{
+													"_type": "UMLParameter",
+													"_id": "AAAAAAFxbfE4jshEF9s=",
+													"_parent": {
+														"$ref": "AAAAAAFxRiYBDyWjHl4="
+													},
+													"type": "Boolean",
+													"direction": "return"
 												}
 											]
 										},
@@ -20007,7 +19928,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFxSabr2CpoAZc="
 									},
-									"name": "RemoteUserTunnel",
+									"name": "LocalUserTunnel",
 									"ownedElements": [
 										{
 											"_type": "UMLInterfaceRealization",
@@ -20214,6 +20135,38 @@
 												"visibility": "private",
 												"multiplicity": "1"
 											}
+										}
+									],
+									"attributes": [
+										{
+											"_type": "UMLAttribute",
+											"_id": "AAAAAAFxai1Cc8yzvYw=",
+											"_parent": {
+												"$ref": "AAAAAAFxRhVxaeFzlMU="
+											},
+											"name": "rmiRemoteAddress",
+											"visibility": "private",
+											"type": "String"
+										},
+										{
+											"_type": "UMLAttribute",
+											"_id": "AAAAAAFxai1Vhs1iVD4=",
+											"_parent": {
+												"$ref": "AAAAAAFxRhVxaeFzlMU="
+											},
+											"name": "rmiRemotePort",
+											"visibility": "private",
+											"type": "Integer"
+										},
+										{
+											"_type": "UMLAttribute",
+											"_id": "AAAAAAFxai171M5Zylc=",
+											"_parent": {
+												"$ref": "AAAAAAFxRhVxaeFzlMU="
+											},
+											"name": "rmiRemoteIdentifier",
+											"visibility": "private",
+											"type": "String"
 										}
 									],
 									"operations": [
@@ -21352,7 +21305,7 @@
 															"top": 525,
 															"width": 655.69384765625,
 															"height": 13,
-															"text": "-rmiPort: String",
+															"text": "-rmiPort: Integer",
 															"horizontalAlignment": 0
 														},
 														{
@@ -22483,7 +22436,7 @@
 															"top": 177,
 															"width": 531.43212890625,
 															"height": 13,
-															"text": "-jdbcAddress: String",
+															"text": "-jdbcURL: String",
 															"horizontalAlignment": 0
 														},
 														{
@@ -22500,7 +22453,7 @@
 															"top": 192,
 															"width": 531.43212890625,
 															"height": 13,
-															"text": "-jdbcPort: String",
+															"text": "-jdbcPort: Integer",
 															"horizontalAlignment": 0
 														},
 														{
@@ -22517,7 +22470,7 @@
 															"top": 207,
 															"width": 531.43212890625,
 															"height": 13,
-															"text": "-jdbcIdentifier: String",
+															"text": "-jdbcDatabase: String",
 															"horizontalAlignment": 0
 														}
 													],
@@ -24202,6 +24155,19 @@
 											"width": 185,
 											"height": 38,
 											"text": "Required standard getters & setters are not displayed"
+										},
+										{
+											"_type": "UMLNoteView",
+											"_id": "AAAAAAFxaa/Ooa+PexQ=",
+											"_parent": {
+												"$ref": "AAAAAAFxSafw8DEMvBU="
+											},
+											"font": "Arial;13;0",
+											"left": 1768,
+											"top": 736,
+											"width": 121,
+											"height": 103,
+											"text": "A proxy has been added between clients and ServerFacade to enhance the security"
 										}
 									]
 								},
@@ -24338,7 +24304,7 @@
 											},
 											"name": "rmiPort",
 											"visibility": "private",
-											"type": "String"
+											"type": "Integer"
 										},
 										{
 											"_type": "UMLAttribute",
@@ -24876,7 +24842,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFxScjoRU8ZyYU="
 											},
-											"name": "jdbcAddress",
+											"name": "jdbcURL",
 											"visibility": "private",
 											"type": "String"
 										},
@@ -24888,7 +24854,7 @@
 											},
 											"name": "jdbcPort",
 											"visibility": "private",
-											"type": "String"
+											"type": "Integer"
 										},
 										{
 											"_type": "UMLAttribute",
@@ -24896,7 +24862,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFxScjoRU8ZyYU="
 											},
-											"name": "jdbcIdentifier",
+											"name": "jdbcDatabase",
 											"visibility": "private",
 											"type": "String"
 										}
@@ -25033,7 +24999,7 @@
 												"$ref": "AAAAAAFxScjoRU8ZyYU="
 											},
 											"name": "retrieveFriends",
-											"documentation": "StatusTypeDAO is needed because the UsersDAO cannot tell apart online users from offline users. \n\nThe only three possible states are:\n\n- Accepted friendship\n- Requested friendship\n- Received friendship\n- Friendship rejected/ended (database only cares if the users are not friends, instead of caring about whether a friendship request was pending or not)",
+											"documentation": "StatusTypeDAO is needed because the UsersDAO cannot tell apart online users from offline users. \n\nThe only three possible states are:\n\n- Accepted friendship\n- Requested friendship\n- Received friendship\n\nNot this one\n- Friendship rejected/ended (database only cares if the users are not friends, instead of caring about whether a friendship request was pending or not)",
 											"parameters": [
 												{
 													"_type": "UMLParameter",

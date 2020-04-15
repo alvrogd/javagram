@@ -24,9 +24,14 @@ public class ConfigurationParameters {
     public static final String RMI_IDENTIFIER = "javagram_server";
 
     /**
+     * Identifier of the driver that will be used to contact the server's database.
+     */
+    private final String JDBC_DRIVER = "org.postgresql.Driver";
+
+    /**
      * URL where the server's database can be located.
      */
-    public static final String JDBC_URL = "localhost";
+    public static final String JDBC_URL = "jdbc:postgresql://localhost";
 
     /**
      * Port where the server's database can be located.
@@ -36,5 +41,15 @@ public class ConfigurationParameters {
     /**
      * Name by which the server's database can be located.
      */
-    public static final String JDBC_DATABASE = "db";
+    public static final String JDBC_DATABASE_URL = "javagram";
+
+    /**
+     * Username to log into an account in the server's database.
+     */
+    public static final String JDBC_USERNAME = "javagram_admin";
+
+    /**
+     * Password to log into an account in the server's database.
+     */
+    public static final String JDBC_PASSWORD = "javagram_admin";
 }

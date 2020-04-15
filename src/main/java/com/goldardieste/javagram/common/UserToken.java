@@ -22,7 +22,7 @@ public class UserToken implements Serializable {
      *
      * @param content information that will allow identifying a certain user.
      */
-    public UserToken(String content, String secret) {
+    public UserToken(String content) {
         this.content = content;
     }
 

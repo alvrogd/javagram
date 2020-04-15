@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     compile "org.whispersystems:signal-protocol-java:2.8.1"
+    compile "com.zaxxer:HikariCP:3.4.2"
     implementation "com.auth0:java-jwt:3.10.2"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

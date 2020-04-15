@@ -46,6 +46,7 @@ public class CurrentUserFacade {
      * Key -> {@link StatusType}.
      * Value -> all the known {@link RemoteUser} that are in the state given by their key.
      */
+    // TODO use EnumMap
     private final Map<StatusType, Set<RemoteUser>> statusTypeSetMap;
 
     /**

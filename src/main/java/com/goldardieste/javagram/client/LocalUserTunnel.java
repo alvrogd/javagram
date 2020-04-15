@@ -27,7 +27,7 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
      * Initializes a {@link LocalUserTunnel} that is prepared to be used.
      *
      * @param remoteUser name that identifies the remote user that this {@link LocalUserTunnel} has been opened for.
-     * @throws RemoteException the remote object could not be successfully exported.
+     * @throws RemoteException the remote object cannot be successfully exported.
      */
     public LocalUserTunnel(String remoteUser) throws RemoteException {
         super();

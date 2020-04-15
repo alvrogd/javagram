@@ -56,7 +56,7 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
      * @param rmiRemotePort            port where the Javagram server can be located.
      * @param javagramServerIdentifier name by which the Javagram server can be located.
      * @param clientFacade             {@link ClientFacade} that orchestrates operations in the client.
-     * @throws RemoteException the remote object could not be successfully exported.
+     * @throws RemoteException the remote object cannot be successfully exported.
      */
     public ServerOperationsFacade(String rmiRemoteAddress, int rmiRemotePort, String javagramServerIdentifier,
                                   ClientFacade clientFacade) throws RemoteException {

@@ -19,7 +19,7 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
     /**
      * Reference to the actual Javagram server.
      */
-    private final IServer service;
+    private final ServerFacade maskedServer;
 
 
     /* ----- Constructor ----- */
@@ -27,26 +27,24 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
     /**
      * Initializes a {@link ServerFacadeProxy} that will act as an intermediary between any client and the real server.
      *
-     * @param service Javagram server which is being masked.
-     * @throws RemoteException the remote object could not be successfully exported.
+     * @param serverFacade Javagram server which is being masked.
+     * @throws RemoteException the remote object cannot be successfully exported.
      */
-    public ServerFacadeProxy(IServer service) throws RemoteException {
+    public ServerFacadeProxy(ServerFacade serverFacade) throws RemoteException {
         super();
-        this.service = service;
+        this.maskedServer = serverFacade;
     }
 
 
     /* ----- Methods ----- */
-
-    // TODO implement all methods
 
     /**
      * {@inheritDoc}
      */
     @Override
     public UserToken signUp(String username, String passwordHash, IServerNotificationsListener
-            serverNotificationsListener) {
-        return null;
+            serverNotificationsListener) throws ServerOperationFailedException {
+        return this.maskedServer.signUp(username, passwordHash, serverNotificationsListener);
     }
 
     /**
@@ -54,71 +52,72 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
      */
     @Override
     public UserToken login(String username, String passwordHash, IServerNotificationsListener
-            serverNotificationsListener) {
-        return null;
+            serverNotificationsListener) throws ServerOperationFailedException {
+        return this.maskedServer.login(username, passwordHash, serverNotificationsListener);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void disconnect(UserToken token) {
-
+    public void disconnect(UserToken token) throws ServerOperationFailedException {
+        this.maskedServer.disconnect(token);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<RemoteUser> retrieveFriends(UserToken token) {
-        return null;
+    public List<RemoteUser> retrieveFriends(UserToken token) throws ServerOperationFailedException {
+        return this.maskedServer.retrieveFriends(token);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<RemoteUser> retrieveFriends(UserToken token, StatusType status) {
-        return null;
+    public List<RemoteUser> retrieveFriends(UserToken token, StatusType status) throws ServerOperationFailedException {
+        return this.maskedServer.retrieveFriends(token, status);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) {
-        return null;
+    public IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) throws
+            ServerOperationFailedException {
+        return this.maskedServer.initiateChat(token, localTunnel, remoteUser);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void requestFriendship(UserToken token, String remoteUser) {
-
+    public void requestFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
+        this.maskedServer.requestFriendship(token, remoteUser);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void acceptFriendship(UserToken token, String remoteUser) {
-
+    public void acceptFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
+        this.maskedServer.acceptFriendship(token, remoteUser);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void rejectFriendship(UserToken token, String remoteUser) {
-
+    public void rejectFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
+        this.maskedServer.rejectFriendship(token, remoteUser);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void endFriendship(UserToken token, String remoteUser) {
-
+    public void endFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
+        this.maskedServer.endFriendship(token, remoteUser);
     }
 }

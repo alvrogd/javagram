@@ -17,21 +17,21 @@ public interface IServer {
      * @param passwordHash                hash of the user's password.
      * @param serverNotificationsListener listener, at the client side, for when the server needs to notify anything
      *                                    (for example, an incoming friendship request).
-     * @return {@link UserToken} which the client must use to verify its identity.
-     * @throws RemoteException error during a remote procedure call.
+     * @return {@link UserToken} which the client must use to verify its identity
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     UserToken signUp(String username, String passwordHash, IServerNotificationsListener serverNotificationsListener)
             throws RemoteException;
 
     /**
-     * Initializes a session using the specified Javagram user.
+     * Initializes a session using the specified Javagram user. Invalidates any previously opened session.
      *
      * @param username                    name by which the user can be identified.
      * @param passwordHash                hash of the user's password.
      * @param serverNotificationsListener listener, at the client side, for when the server needs to notify anything
      *                                    (for example, an incoming friendship request).
-     * @return {@link UserToken} which the client must use to verify its identity.
-     * @throws RemoteException error during a remote procedure call.
+     * @return {@link UserToken} which the client must use to verify its identity
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     UserToken login(String username, String passwordHash, IServerNotificationsListener serverNotificationsListener)
             throws RemoteException;
@@ -40,7 +40,7 @@ public interface IServer {
      * Terminates a session that was previously initiated.
      *
      * @param token {@link UserToken} that identifies the session which will be terminated.
-     * @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     void disconnect(UserToken token) throws RemoteException;
 
@@ -51,7 +51,7 @@ public interface IServer {
      *
      * @param token identifies the user on whose behalf the operation will be performed.
      * @return all the related users that have been found.
-     * @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     List<RemoteUser> retrieveFriends(UserToken token) throws RemoteException;
 
@@ -62,7 +62,7 @@ public interface IServer {
      * @param token  identifies the user on whose behalf the operation will be performed.
      * @param status status in which the remote users will be in relation to the other user.
      * @return all the related users that have been found.
-     * @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     List<RemoteUser> retrieveFriends(UserToken token, StatusType status) throws RemoteException;
 
@@ -76,18 +76,21 @@ public interface IServer {
      * @param remoteUser  name by which the remote user that will be asked can be identified.
      * @return if the remote user accepts the request, a {@link IRemoteUserTunnel} through which the client may send
      * him messages is returned.
-     * @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) throws
             RemoteException;
 
     /**
-     * A friendship request is sent to the remote user on behalf of the client, as long as it did not already exist. It
-     * is also registered, so that the remote user may receive in the future even if he is or goes offline.
+     * A friendship request is sent to the remote user on behalf of the client, as long as it did not already exist. If
+     * the remote user has already sent a friendship request, they automatically become friends.
+     * <p>
+     * The request is also registered, so that the remote user may receive in the future even if he is or goes offline.
+     * The remote user will also be notified about it if he is online.
      *
      * @param token      identifies the user on whose behalf the operation will be performed.
      * @param remoteUser name by which the user who will receive the request can be identified.
-     *                   @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     void requestFriendship(UserToken token, String remoteUser) throws RemoteException;
 
@@ -97,7 +100,7 @@ public interface IServer {
      *
      * @param token      identifies the user on whose behalf the operation will be performed.
      * @param remoteUser name by which the user who sent the request can be identified.
-     *                   @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     void acceptFriendship(UserToken token, String remoteUser) throws RemoteException;
 
@@ -107,7 +110,7 @@ public interface IServer {
      *
      * @param token      identifies the user on whose behalf the operation will be performed.
      * @param remoteUser name by which the user who sent the request can be identified.
-     *                   @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     void rejectFriendship(UserToken token, String remoteUser) throws RemoteException;
 
@@ -117,7 +120,7 @@ public interface IServer {
      *
      * @param token      identifies the user on whose behalf the operation will be performed.
      * @param remoteUser name by which the client's friend request can be identified.
-     *                   @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     void endFriendship(UserToken token, String remoteUser) throws RemoteException;
 }

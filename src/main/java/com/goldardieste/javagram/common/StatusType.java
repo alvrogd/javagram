@@ -26,12 +26,7 @@ public enum StatusType {
     FRIENDSHIP_RECEIVED,
 
     /**
-     * The remote user has rejected a friendship request.
+     * The two users are not related at all. It will be represented in the database as the absence of a relation.
      */
-    FRIENDSHIP_REJECTED,
-
-    /**
-     * The remote has decided to end the friendship with the local user.
-     */
-    FRIENDSHIP_ENDED
+    NOT_RELATED
 }

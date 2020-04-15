@@ -1,13 +1,10 @@
-package com.goldardieste.javagram.common;
+package com.goldardieste.javagram.server;
 
-import java.io.Serializable;
+import com.goldardieste.javagram.common.RemoteUser;
+
 import java.util.Objects;
 
-/**
- * This class represents an instance of another user of the service. For instance, a certain client will receive a
- * collection of {@link RemoteUser} as a representation of its friends.
- */
-public class RemoteUser implements Serializable {
+public class RemoteUserDao {
 
     /* ----- Attributes ----- */
 
@@ -19,7 +16,7 @@ public class RemoteUser implements Serializable {
     /**
      * State in which the remote user will be seen by the local user.
      */
-    private StatusType status;
+    private StatusTypeUserDAO status;
 
 
     /* ----- Constructor ----- */
@@ -30,7 +27,7 @@ public class RemoteUser implements Serializable {
      * @param username remote user's name.
      * @param status   remote user's status.
      */
-    public RemoteUser(String username, StatusType status) {
+    public RemoteUserDao(String username, StatusTypeUserDAO status) {
         this.username = username;
         this.status = status;
     }
@@ -52,7 +49,7 @@ public class RemoteUser implements Serializable {
      *
      * @return {@link #status}.
      */
-    public StatusType getStatus() {
+    public StatusTypeUserDAO getStatus() {
         return status;
     }
 
@@ -61,7 +58,7 @@ public class RemoteUser implements Serializable {
      *
      * @param status new {@link #status}.
      */
-    public void setStatus(StatusType status) {
+    public void setStatus(StatusTypeUserDAO status) {
         this.status = status;
     }
 
@@ -72,7 +69,7 @@ public class RemoteUser implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RemoteUser that = (RemoteUser) o;
+        RemoteUserDao that = (RemoteUserDao) o;
         return username.equals(that.username);
     }
 

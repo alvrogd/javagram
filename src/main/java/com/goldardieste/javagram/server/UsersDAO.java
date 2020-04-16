@@ -108,7 +108,6 @@ public class UsersDAO {
             return this.hikariDataSource.getConnection();
         } catch (SQLException e) {
             System.err.println("Could not establish a connection with the database");
-            e.printStackTrace();
             throw new DaoOperationException(e);
         }
     }
@@ -125,55 +124,9 @@ public class UsersDAO {
             connection.close();
         } catch (SQLException e) {
             System.err.println("Could close the given connection to the database");
-            e.printStackTrace();
             throw new DaoOperationException(e);
         }
     }
-
-    /**
-     * Tries to establish a connection to the specified databased via {@link #jdbcURL}, {@link #jdbcPort} and
-     * {@link #jdbcDatabase}.
-     *
-     * @return if the operation is executed successfully, the newly established connection is returned.
-     * @throws IllegalStateException if the connection with the database cannot be successfully established.
-     */
-   /*private Connection connectToDatabase() throws IllegalStateException {
-
-        // Loads driver's class file into memory and registers it
-        try {
-            Class.forName(this.jdbcDriver).getDeclaredConstructor().newInstance();
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.err.println("Driver's class not found");
-            throw new IllegalStateException(e);
-
-        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
-            System.err.println("Could not instantiate driver's class");
-            throw new IllegalStateException(e);
-
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            System.err.println("Could not access to driver's class");
-            throw new IllegalStateException(e);
-        }
-
-        // Establishes a connection with the desired database
-        Connection connection;
-
-        try {
-            connection = DriverManager.getConnection(this.jdbcURL + ":" + this.jdbcPort + "/" + this.jdbcDatabase,
-                    this.jdbcUsername, this.jdbcPassword);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Could not establish a connection with the database");
-            throw new IllegalStateException(e);
-        }
-
-        return connection;
-    }*/
 
     /**
      * Checks if a certain user is registered in the database.
@@ -202,7 +155,6 @@ public class UsersDAO {
             found = resultSet.next();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not check if the specified user is registered");
             throw new DaoOperationException(e);
 
@@ -234,14 +186,6 @@ public class UsersDAO {
 
         // If the user already exists, a conflict due to the PK constraint will arise
         String statement =
-                /*"INSERT INTO users(username, password_hash, password_salt) " +
-                        "SELECT * " +
-                        "FROM (SELECT ? AS username, ? AS hash, ? AS salt) AS tmp " +
-                        "WHERE NOT EXISTS(" +
-                        "    SELECT username " +
-                        "    FROM users " +
-                        "    WHERE username=?" +
-                        ")";*/
                 "INSERT INTO users(username, password_hash, password_salt) " +
                 "VALUES(?, ?, ?)";
         PreparedStatement stm = null;
@@ -264,7 +208,6 @@ public class UsersDAO {
             connection.commit();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not register the specified user");
             throw new DaoOperationException(e);
 
@@ -321,7 +264,6 @@ public class UsersDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not check if the user credentials are valid");
             throw new DaoOperationException(e);
 
@@ -425,7 +367,6 @@ public class UsersDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not retrieve the current friends for the specified user");
             throw new DaoOperationException(e);
 
@@ -477,7 +418,6 @@ public class UsersDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not retrieve the users to whom the specified one has requested a friendship");
             throw new DaoOperationException(e);
 
@@ -528,7 +468,6 @@ public class UsersDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not retrieve the users from whom the specified one has received a friendship " +
                     "request");
             throw new DaoOperationException(e);
@@ -618,7 +557,6 @@ public class UsersDAO {
             valid = resultSet.next();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not check if the two specified users are friends");
             throw new DaoOperationException(e);
 
@@ -668,7 +606,6 @@ public class UsersDAO {
             valid = resultSet.next();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not check if the first user has sent a friendship request to the second one");
             throw new DaoOperationException(e);
 
@@ -719,7 +656,6 @@ public class UsersDAO {
             valid = resultSet.next();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not check if the two users are related in any way");
             throw new DaoOperationException(e);
 
@@ -830,7 +766,6 @@ public class UsersDAO {
             connection.commit();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not create a friendship between the two specified users");
             throw new DaoOperationException(e);
 
@@ -885,7 +820,6 @@ public class UsersDAO {
             connection.commit();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not register a new friendship request between the two specified users");
             throw new DaoOperationException(e);
 
@@ -931,7 +865,6 @@ public class UsersDAO {
             connection.commit();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.err.println("Could not delete any existing relation between the two specified users");
             throw new DaoOperationException(e);
 

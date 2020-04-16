@@ -34,9 +34,7 @@ public class CryptographicServices {
             return randomBytes;
 
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
             System.err.println("No secure CSPRNG algorithm could be found");
-
             throw new IllegalStateException(e);
         }
     }
@@ -109,9 +107,7 @@ public class CryptographicServices {
             return factory.generateSecret(spec).getEncoded();
 
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
             System.err.println("The system does not support hashing using PBKDF2WithHmacSHA512");
-
             throw new IllegalStateException(e);
         }
     }

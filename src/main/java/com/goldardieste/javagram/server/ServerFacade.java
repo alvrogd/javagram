@@ -65,9 +65,9 @@ public class ServerFacade implements IServer {
 
         try {
             this.proxy = new ServerFacadeProxy(this);
+
         } catch (RemoteException e) {
             System.err.println("The server's proxy could not be instantiated");
-            e.printStackTrace();
             throw new IllegalStateException(e);
         }
 
@@ -203,6 +203,7 @@ public class ServerFacade implements IServer {
             System.err.println("Could not retrieve the friends of the specified user");
             e.printStackTrace();
             throw new ServerOperationFailedException("Could not retrieve the friends of the specified user");
+
         } finally {
             // If the previous steps have been completed successfully, the operation will seem successful to the
             // client even if the connection cannot be closed
@@ -512,6 +513,7 @@ public class ServerFacade implements IServer {
             if (connection != null) {
                 this.usersDAO.freeConnection(connection);
             }
+
         } catch (DaoOperationException e) {
             System.err.println("Could not close an opened connection to the database");
             e.printStackTrace();

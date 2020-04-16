@@ -90,17 +90,14 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
             return (IServer) Naming.lookup(url);
 
         } catch (NotBoundException e) {
-            e.printStackTrace();
             System.err.println("The following remote object could not be found: " + url);
             throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
             System.err.println("\"Naming.rebind\" received the following malformed URL: " + url);
             throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
 
         } catch (RemoteException e) {
-            e.printStackTrace();
             System.err.println("The RMI registry could not be contacted: " + url);
             throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
         }

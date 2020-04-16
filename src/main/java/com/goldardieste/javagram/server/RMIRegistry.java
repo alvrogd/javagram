@@ -68,13 +68,13 @@ public class RMIRegistry {
                     identifier);
 
         } catch (RemoteException e) {
-            e.printStackTrace();
             System.err.println("The RMI registry could not be initialized/contacted");
+            e.printStackTrace();
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
             System.err.println("\"Naming.rebind\" received the following malformed URL: " + "rmi://localhost:" +
                     this.port + "/" + identifier);
+            e.printStackTrace();
         }
     }
 
@@ -136,16 +136,16 @@ public class RMIRegistry {
             }
 
         } catch (RemoteException e) {
-            e.printStackTrace();
             System.err.println("The RMI registry could not be contacted");
-        } catch (NotBoundException e) {
             e.printStackTrace();
+        } catch (NotBoundException e) {
             System.err.println("The specified Javagram server is not bound to the given RMI registry: " +
                     "rmi://localhost:" + this.port + "/" + identifier);
-        } catch (MalformedURLException e) {
             e.printStackTrace();
+        } catch (MalformedURLException e) {
             System.err.println("\"Naming.unbind\" received the following malformed URL: " + "rmi://localhost:" +
                     this.port + "/" + identifier);
+            e.printStackTrace();
         }
 
         System.out.println("Execution successfully stopped");

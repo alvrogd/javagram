@@ -100,9 +100,10 @@ public interface IServer {
      *
      * @param token      identifies the user on whose behalf the operation will be performed.
      * @param remoteUser name by which the user who sent the request can be identified.
-     * @throws RemoteException irrecoverable error during a remote procedure call.
+     * @return if the remote user is currently online.
+     * @throws RemoteException irrecoverable error during a remote procedure call
      */
-    void acceptFriendship(UserToken token, String remoteUser) throws RemoteException;
+    boolean acceptFriendship(UserToken token, String remoteUser) throws RemoteException;
 
     /**
      * A friendship request is rejected, as long as the remote user has sent it previously to the client. The remote

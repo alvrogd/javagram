@@ -2,6 +2,9 @@ package com.goldardieste.javagram.client;
 
 import com.goldardieste.javagram.common.*;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -56,110 +59,158 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
      * @param rmiRemotePort            port where the Javagram server can be located.
      * @param javagramServerIdentifier name by which the Javagram server can be located.
      * @param clientFacade             {@link ClientFacade} that orchestrates operations in the client.
-     * @throws RemoteException the remote object cannot be successfully exported.
+     * @throws RemoteException       the remote object cannot be successfully exported.
+     * @throws IllegalStateException if the specified Javagram server cannot be retrieved.
      */
     public ServerOperationsFacade(String rmiRemoteAddress, int rmiRemotePort, String javagramServerIdentifier,
-                                  ClientFacade clientFacade) throws RemoteException {
+                                  ClientFacade clientFacade) throws RemoteException, IllegalStateException {
         super();
+        this.clientFacade = clientFacade;
+
         this.rmiRemoteAddress = rmiRemoteAddress;
         this.rmiRemotePort = rmiRemotePort;
         this.javagramServerIdentifier = javagramServerIdentifier;
-        this.javagramServer = null;
-        this.clientFacade = clientFacade;
+        this.javagramServer = retrieveJavagramServer();
     }
 
 
     /* ----- Methods ----- */
 
-    // TODO implement all methods
+    /**
+     * Retrieves an instance of {@link IServer} from the specified RMI registry.
+     *
+     * @return instance of {@link IServer} that represents a Javagram server.
+     * @throws IllegalStateException if the specified Javagram server cannot be retrieved.
+     */
+    private IServer retrieveJavagramServer() throws IllegalStateException {
+
+        String url = "rmi://" + this.rmiRemoteAddress + ":" + this.rmiRemotePort + "/" + this.javagramServerIdentifier;
+
+        try {
+            return (IServer) Naming.lookup(url);
+
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+            System.err.println("The following remote object could not be found: " + url);
+            throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            System.err.println("\"Naming.rebind\" received the following malformed URL: " + url);
+            throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            System.err.println("The RMI registry could not be contacted: " + url);
+            throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
+        }
+    }
 
     /**
      * Calls {@link IServer#signUp(String, String, IServerNotificationsListener)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public UserToken signUp(String username, String passwordHash, IServerNotificationsListener
-            serverNotificationsListener) {
-        return null;
+    public UserToken signUp(String username, String passwordHash) throws RemoteException {
+        return this.javagramServer.signUp(username, passwordHash, this);
     }
 
     /**
      * Calls {@link IServer#login(String, String, IServerNotificationsListener)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public UserToken login(String username, String passwordHash, IServerNotificationsListener
-            serverNotificationsListener) {
-        return null;
+    public UserToken login(String username, String passwordHash) throws RemoteException {
+        return this.javagramServer.login(username, passwordHash, this);
     }
 
     /**
      * Calls {@link IServer#disconnect(UserToken)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public void disconnect(UserToken token) {
-
+    public void disconnect(UserToken token) throws RemoteException {
+        this.javagramServer.disconnect(token);
     }
 
     /**
      * Calls {@link IServer#retrieveFriends(UserToken)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public List<RemoteUser> retrieveFriends(UserToken token) {
-        return null;
+    public List<RemoteUser> retrieveFriends(UserToken token) throws RemoteException {
+        return this.javagramServer.retrieveFriends(token);
     }
 
     /**
      * Calls {@link IServer#retrieveFriends(UserToken, StatusType)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public List<RemoteUser> retrieveFriends(UserToken token, StatusType status) {
-        return null;
+    public List<RemoteUser> retrieveFriends(UserToken token, StatusType status) throws RemoteException {
+        return this.javagramServer.retrieveFriends(token, status);
     }
 
     /**
      * Calls {@link IServer#initiateChat(UserToken, IRemoteUserTunnel, String)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) {
-        return null;
+    public IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) throws
+            RemoteException {
+        return this.javagramServer.initiateChat(token, localTunnel, remoteUser);
     }
 
     /**
      * Calls {@link IServer#requestFriendship(UserToken, String)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public void requestFriendship(UserToken token, String remoteUser) {
-
+    public void requestFriendship(UserToken token, String remoteUser) throws RemoteException {
+        this.javagramServer.requestFriendship(token, remoteUser);
     }
 
     /**
      * Calls {@link IServer#acceptFriendship(UserToken, String)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public void acceptFriendship(UserToken token, String remoteUser) {
-
+    public boolean acceptFriendship(UserToken token, String remoteUser) throws RemoteException {
+        return this.javagramServer.acceptFriendship(token, remoteUser);
     }
 
     /**
      * Calls {@link IServer#rejectFriendship(UserToken, String)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public void rejectFriendship(UserToken token, String remoteUser) {
-
+    public void rejectFriendship(UserToken token, String remoteUser) throws RemoteException {
+        this.javagramServer.rejectFriendship(token, remoteUser);
     }
 
     /**
      * Calls {@link IServer#endFriendship(UserToken, String)}.
-     */
-    public void endFriendship(UserToken token, String remoteUser) {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IRemoteUserTunnel replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel) {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
      *
-     * @param remoteUser
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
+     */
+    public void endFriendship(UserToken token, String remoteUser) throws RemoteException {
+        this.javagramServer.endFriendship(token, remoteUser);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
-    public void updateRemoteUserStatus(RemoteUser remoteUser) {
+    public IRemoteUserTunnel replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel) throws
+            RemoteException {
+        return this.clientFacade.replyChatRequest(remoteUser, remoteUserTunnel);
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateRemoteUserStatus(RemoteUser remoteUser) throws RemoteException {
+        this.clientFacade.updateRemoteUserStatus(remoteUser);
     }
 }

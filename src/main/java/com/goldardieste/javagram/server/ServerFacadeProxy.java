@@ -101,8 +101,8 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
      * {@inheritDoc}
      */
     @Override
-    public void acceptFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
-        this.maskedServer.acceptFriendship(token, remoteUser);
+    public boolean acceptFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
+        return this.maskedServer.acceptFriendship(token, remoteUser);
     }
 
     /**

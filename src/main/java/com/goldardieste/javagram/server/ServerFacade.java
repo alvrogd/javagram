@@ -101,6 +101,7 @@ public class ServerFacade implements IServer {
 
                 // 3. Client's listener is stored for later usage
                 this.serverNotificationsListeners.put(username, serverNotificationsListener);
+
             } else {
                 throw new ServerOperationFailedException("The specified username is already registered");
             }
@@ -331,7 +332,8 @@ public class ServerFacade implements IServer {
             else {
                 this.usersDAO.updateUsersStatus(connection, username, remoteUser, StatusTypeUserDAO.FRIENDSHIP_SENT);
 
-                // The remote user is notified if he is currently online
+                // The remote user is notified if he is currently online (StatusType will always be ONLINE as the
+                // client has just accepted the friendship request)
                 notifyOnlineUserAboutUserStatus(remoteUser, username, StatusType.FRIENDSHIP_RECEIVED);
             }
 
@@ -356,8 +358,9 @@ public class ServerFacade implements IServer {
      * {@inheritDoc}
      */
     @Override
-    public void acceptFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
+    public boolean acceptFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
 
+        boolean online = false;
         Connection connection = null;
 
         try {
@@ -372,8 +375,13 @@ public class ServerFacade implements IServer {
                 this.usersDAO.updateUsersStatus(connection, username, remoteUser,
                         StatusTypeUserDAO.ACCEPTED_FRIENDSHIP);
 
-                // The remote user is notified if he is currently online
+                // The remote user is notified if he is currently online (StatusType will always be ONLINE as the
+                // client has just accepted the friendship request)
                 notifyOnlineUserAboutUserStatus(remoteUser, username, StatusType.ONLINE);
+
+                // The user that accepts the requested is informed about his new friend being currently available or
+                // not
+                online = this.serverNotificationsListeners.containsKey(remoteUser);
 
             } else {
                 throw new ServerOperationFailedException("The specified remote user has not sent a friendship " +
@@ -396,6 +404,8 @@ public class ServerFacade implements IServer {
             // client even if the connection cannot be closed
             closeDaoConnection(connection);
         }
+
+        return online;
     }
 
     /**

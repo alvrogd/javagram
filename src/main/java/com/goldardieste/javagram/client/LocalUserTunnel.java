@@ -21,8 +21,6 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
 
     /* ----- Constructor ----- */
 
-    // TODO implement methods
-
     /**
      * Initializes a {@link LocalUserTunnel} that is prepared to be used.
      *
@@ -43,5 +41,6 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
     @Override
     public void transmitMessage(String message) {
 
+        System.out.println("The " + this.remoteUser + " user has sent the following message: " + message);
     }
 }

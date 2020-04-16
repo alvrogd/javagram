@@ -20,7 +20,8 @@ public interface IServerNotificationsListener extends Remote {
      *                         communicate with him.
      * @return if the client has accepted the request, a {@link IRemoteUserTunnel} through which the remote user may
      * send him messages is returned.
-     * @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call, or the chat request has been
+     *                         rejected.
      */
     IRemoteUserTunnel replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel) throws RemoteException;
 
@@ -35,7 +36,7 @@ public interface IServerNotificationsListener extends Remote {
      *
      * @param remoteUser {@link RemoteUser} that contains the name that identifies the remote user whose current status
      *                   (which also contains), in relation to the client, is being transmitted.
-     * @throws RemoteException error during a remote procedure call.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
      */
     void updateRemoteUserStatus(RemoteUser remoteUser) throws RemoteException;
 }

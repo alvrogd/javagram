@@ -141,6 +141,23 @@ public class ServerFacade implements IServer {
 
                 // 3. Client's listener is stored for later usage
                 this.serverNotificationsListeners.put(username, serverNotificationsListener);
+
+                // 4. All current friends of the user are notified about him coming online
+                try {
+                    List<RemoteUserDao> currentFriends =
+                            this.usersDAO.retrieveFriends(connection, username, StatusTypeUserDAO.ACCEPTED_FRIENDSHIP);
+                    currentFriends.forEach((f) ->
+                            notifyOnlineUserAboutUserStatus(f.getUsername(), username, StatusType.ONLINE));
+
+                } catch (DaoOperationException e) {
+                    System.err.println("Could not notify a given user's friends about him coming online");
+                    e.printStackTrace();
+
+                    // An exception is thrown even tough the user has successfully identified as is current friends
+                    // will not be able to communicate with him
+                    throw new ServerOperationFailedException("Could not initiate the session in the Javagram network");
+                }
+
             } else {
                 throw new ServerOperationFailedException("The specified credentials are not valid");
             }
@@ -148,10 +165,10 @@ public class ServerFacade implements IServer {
         } catch (DaoOperationException e) {
             System.err.println("Could not verify the given credentials");
             e.printStackTrace();
-            throw new ServerOperationFailedException("Could not verify the given credentials");
+            throw new ServerOperationFailedException("Could not initiate the session in the Javagram network");
 
         } finally {
-            // 4. If the previous steps have been completed successfully, the operations will seem successful to the
+            // 5. If the previous steps have been completed successfully, the operations will seem successful to the
             // client even if the connection cannot be closed
             closeDaoConnection(connection);
         }
@@ -165,16 +182,40 @@ public class ServerFacade implements IServer {
     @Override
     public void disconnect(UserToken token) throws ServerOperationFailedException {
 
+        Connection connection = null;
+
         try {
-            String closedUsername = this.currentSessionsManager.terminateSession(token);
+            String username = this.currentSessionsManager.getUserFromSession(token);
+
+            connection = this.usersDAO.getConnection();
+
+            // All current friends of the user are notified about him going offline
+            List<RemoteUserDao> currentFriends =
+                    this.usersDAO.retrieveFriends(connection, username, StatusTypeUserDAO.ACCEPTED_FRIENDSHIP);
+            currentFriends.forEach((f) ->
+                    notifyOnlineUserAboutUserStatus(f.getUsername(), username, StatusType.DISCONNECTED));
+
+            // The given token will no longer be valid
+            this.currentSessionsManager.terminateSession(token);
 
             // The client's listener is no longer needed
-            this.serverNotificationsListeners.remove(closedUsername);
+            this.serverNotificationsListeners.remove(username);
 
         } catch (InvalidUserTokenException e) {
             System.err.println("An illegitimate token has been received");
             e.printStackTrace();
             throw new ServerOperationFailedException("Could not close the specified session");
+
+        } catch (DaoOperationException e) {
+            System.err.println("Could not notify a given user's friends about him going offline");
+            e.printStackTrace();
+            throw new ServerOperationFailedException("Could not close the specified session");
+        }
+
+        finally {
+            // If the previous steps have been completed successfully, the operations will seem successful to the
+            // client even if the connection cannot be closed
+            closeDaoConnection(connection);
         }
     }
 
@@ -271,16 +312,12 @@ public class ServerFacade implements IServer {
                 // And the remote user must be online
                 IServerNotificationsListener listener = this.serverNotificationsListeners.get(remoteUser);
 
-                if(listener != null) {
+                if (listener != null) {
                     result = listener.replyChatRequest(username, localTunnel);
-                }
-
-                else {
+                } else {
                     throw new ServerOperationFailedException("The specified remote user is not currently available");
                 }
-            }
-
-            else {
+            } else {
                 throw new ServerOperationFailedException("The client is not friends with the specified remote user");
             }
 

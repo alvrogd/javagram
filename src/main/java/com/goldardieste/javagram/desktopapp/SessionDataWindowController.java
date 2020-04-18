@@ -1,11 +1,11 @@
 package com.goldardieste.javagram.desktopapp;
 
+import com.goldardieste.javagram.client.ClientFacade;
+import com.goldardieste.javagram.client.ClientOperationFailedException;
+import com.goldardieste.javagram.common.ConfigurationParameters;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -19,6 +19,11 @@ public class SessionDataWindowController extends AbstractController {
      * If the user is going to create a new Javagram account or not.
      */
     private boolean signUpMode;
+
+    /**
+     * Provides all the back-end functionality to the desktop app.
+     */
+    private ClientFacade clientFacade;
 
 
     /* ----- FXML attributes ----- */
@@ -138,17 +143,46 @@ public class SessionDataWindowController extends AbstractController {
         // Both expressions are evaluated even if the first one is false
         if (checkUsername(null) & checkPassword(null)) {
 
-            MainWindowController controller = (MainWindowController) loadNewScene("main_window");
+            // The Javagram client back-end is set up if it is not yet
+            prepareClientBackEnd();
 
-            controller.prueba();
-            // TODO
-            // The Controller used for the Model-View-Controller architecture that will handle the chat's features is
-            // initialized
-            //CommunicationHandler communicationHandler = new CommunicationHandler(chatController,
-                    //this.fieldAddress.getText(), Integer.parseInt(this.fieldPort.getText()));
+            try {
+                // If the user is going to sign up
+                if (this.signUpMode) {
+                    clientFacade.signUp(username, password);
 
-            // So that all resources are properly freed when the application ends its execution
-            //primaryStage.setOnCloseRequest(e -> communicationHandler.handleClosing());
+                } else {
+                    clientFacade.login(username, password);
+                }
+
+                // If everything goes well, the main window is loaded
+                MainWindowController controller = (MainWindowController) loadNewScene("main_window");
+                controller.prueba();
+
+            } catch (ClientOperationFailedException exception) {
+                exception.printStackTrace();
+            }
+        }
+
+
+        // TODO
+        // The Controller used for the Model-View-Controller architecture that will handle the chat's features is
+        // initialized
+        //CommunicationHandler communicationHandler = new CommunicationHandler(chatController,
+        //this.fieldAddress.getText(), Integer.parseInt(this.fieldPort.getText()));
+
+        // So that all resources are properly freed when the application ends its execution
+        //primaryStage.setOnCloseRequest(e -> communicationHandler.handleClosing());
+    }
+
+    /**
+     * Creates an instance of {@link ClientFacade} that will provide all the required functionality to the desktop app.
+     */
+    private void prepareClientBackEnd() {
+
+        if(this.clientFacade == null) {
+            this.clientFacade = new ClientFacade(ConfigurationParameters.RMI_ADDRESS,
+                    ConfigurationParameters.RMI_PORT, ConfigurationParameters.RMI_IDENTIFIER);
         }
     }
 }

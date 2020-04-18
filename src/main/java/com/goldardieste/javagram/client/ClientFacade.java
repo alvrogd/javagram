@@ -34,7 +34,7 @@ public class ClientFacade implements IServerNotificationsListener {
     /**
      * {@link ReentrantLock} that a thread must acquire to check/modify the value of {@link #userToken}.
      */
-    private ReentrantLock userTokenLock;
+    private final ReentrantLock userTokenLock;
 
 
     /* ----- Constructor ----- */
@@ -208,7 +208,6 @@ public class ClientFacade implements IServerNotificationsListener {
             System.err.println("No valid user session has been established yet");
             throw new InvalidClientSessionException("No valid user session has been established yet");
         }
-
 
         return successful;
     }

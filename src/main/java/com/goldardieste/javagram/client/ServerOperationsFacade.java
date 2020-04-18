@@ -85,6 +85,7 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
     private IServer retrieveJavagramServer() throws IllegalStateException {
 
         String url = "rmi://" + this.rmiRemoteAddress + ":" + this.rmiRemotePort + "/" + this.javagramServerIdentifier;
+        System.out.println(url);
 
         try {
             return (IServer) Naming.lookup(url);

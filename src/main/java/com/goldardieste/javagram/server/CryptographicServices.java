@@ -21,22 +21,23 @@ public class CryptographicServices {
      *
      * @param byteCount how many random bytes will be generated.
      * @return generated random bytes.
-     * @throws IllegalStateException if no secure CSPRNG algorithm can be found in the host system.
+     * @throws IllegalStateException if a CSPRNG algorithm cannot be found in the host system.
      */
     public static byte[] generateRandomBytes(int byteCount) {
 
-        try {
+//        try {
             byte[] randomBytes = new byte[byteCount];
 
-            SecureRandom random = SecureRandom.getInstanceStrong();
+            // .getInstanceStrong was painfully slow
+            SecureRandom random = new SecureRandom();
             random.nextBytes(randomBytes);
 
             return randomBytes;
 
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println("No secure CSPRNG algorithm could be found");
-            throw new IllegalStateException(e);
-        }
+//        } catch (NoSuchAlgorithmException e) {
+//            System.err.println("No CSPRNG algorithm could be found");
+//            throw new IllegalStateException(e);
+//        }
     }
 
     /**

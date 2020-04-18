@@ -1,12 +1,13 @@
 package com.goldardieste.javagram.common;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
 /**
  * This interface contains all the operations that a Javagram server must support.
  */
-public interface IServer {
+public interface IServer extends Remote {
 
     /* ----- Methods ----- */
 

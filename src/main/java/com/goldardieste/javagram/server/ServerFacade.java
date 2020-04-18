@@ -75,6 +75,18 @@ public class ServerFacade implements IServer {
     }
 
 
+    /* ----- Getters ----- */
+
+    /**
+     * Retrieves the current {@link #proxy}.
+     *
+     * @return {@link #proxy}.
+     */
+    public IServer getProxy() {
+        return proxy;
+    }
+
+
     /* ----- Methods ----- */
 
     /**
@@ -92,16 +104,12 @@ public class ServerFacade implements IServer {
             connection = this.usersDAO.getConnection();
 
             if (!this.usersDAO.existsUser(connection, username)) {
-
                 // Will throw an exception if an user with the given username already exists
                 this.usersDAO.createUser(connection, username, passwordHash);
-
                 // 2. It is automatically logged in
                 userToken = this.currentSessionsManager.initiateSession(username);
-
                 // 3. Client's listener is stored for later usage
                 this.serverNotificationsListeners.put(username, serverNotificationsListener);
-
             } else {
                 throw new ServerOperationFailedException("The specified username is already registered");
             }

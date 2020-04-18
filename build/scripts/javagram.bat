@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\javagram-1.0-SNAPSHOT.jar;%APP_HOME%\lib\signal-protocol-java-2.8.1.jar;%APP_HOME%\lib\java-jwt-3.10.2.jar;%APP_HOME%\lib\javafx-fxml-11-linux.jar;%APP_HOME%\lib\javafx-controls-11-linux.jar;%APP_HOME%\lib\javafx-controls-11.jar;%APP_HOME%\lib\javafx-graphics-11-linux.jar;%APP_HOME%\lib\javafx-graphics-11.jar;%APP_HOME%\lib\javafx-base-11-linux.jar;%APP_HOME%\lib\javafx-base-11.jar;%APP_HOME%\lib\curve25519-java-0.5.0.jar;%APP_HOME%\lib\protobuf-javalite-3.10.0.jar;%APP_HOME%\lib\jackson-databind-2.10.3.jar;%APP_HOME%\lib\commons-codec-1.14.jar;%APP_HOME%\lib\jackson-annotations-2.10.3.jar;%APP_HOME%\lib\jackson-core-2.10.3.jar
+set CLASSPATH=%APP_HOME%\lib\javagram-1.0-SNAPSHOT.jar;%APP_HOME%\lib\signal-protocol-java-2.8.1.jar;%APP_HOME%\lib\HikariCP-3.4.2.jar;%APP_HOME%\lib\java-jwt-3.10.2.jar;%APP_HOME%\lib\javafx-fxml-11-linux.jar;%APP_HOME%\lib\javafx-controls-11-linux.jar;%APP_HOME%\lib\javafx-controls-11.jar;%APP_HOME%\lib\javafx-graphics-11-linux.jar;%APP_HOME%\lib\javafx-graphics-11.jar;%APP_HOME%\lib\javafx-base-11-linux.jar;%APP_HOME%\lib\javafx-base-11.jar;%APP_HOME%\lib\curve25519-java-0.5.0.jar;%APP_HOME%\lib\protobuf-javalite-3.10.0.jar;%APP_HOME%\lib\slf4j-api-1.7.25.jar;%APP_HOME%\lib\jackson-databind-2.10.3.jar;%APP_HOME%\lib\commons-codec-1.14.jar;%APP_HOME%\lib\jackson-annotations-2.10.3.jar;%APP_HOME%\lib\jackson-core-2.10.3.jar
 
 @rem Execute javagram
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %JAVAGRAM_OPTS%  -classpath "%CLASSPATH%" com.goldardieste.javagram.desktopapp.MainApp %CMD_LINE_ARGS%

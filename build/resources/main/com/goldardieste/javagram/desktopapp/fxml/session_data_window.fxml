@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="600.0" styleClass="rootContainer" stylesheets="@../stylesheets/session_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.SessionDataWindowController">
+   <children>
+      <Label alignment="CENTER" layoutY="160.0" prefHeight="20.0" prefWidth="600.0" styleClass="javagramTitle" text="Javagram" textAlignment="CENTER" />
+      <TextField fx:id="fieldUsername" layoutX="175.0" layoutY="302.0" onKeyReleased="#checkUsername" prefHeight="28.0" prefWidth="250.0" promptText="Username" styleClass="sessionDataInput, sessionDataInputValid" />
+      <PasswordField fx:id="fieldPassword" layoutX="175.0" layoutY="360.0" onKeyReleased="#checkPassword" prefHeight="26.0" prefWidth="250.0" promptText="Password" styleClass="sessionDataInput, sessionDataInputValid" />
+      <Button layoutX="229.0" layoutY="470.0" mnemonicParsing="false" onMouseClicked="#initiateSession" styleClass="loginButton" text="GO ON!" />
+   </children>
+</AnchorPane>

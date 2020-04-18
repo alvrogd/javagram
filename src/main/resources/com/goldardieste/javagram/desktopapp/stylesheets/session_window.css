@@ -1,0 +1,38 @@
+.rootContainer {
+    -fx-background-color: #17212b;
+}
+
+.javagramTitle {
+    -fx-font-size: 24px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.loginButton {
+    -fx-font-size: 16px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #2f6ea5;
+    -fx-padding: 20px 40px 20px 40px;
+}
+
+.loginButton:hover {
+    -fx-cursor: hand;
+}
+
+.sessionDataInput {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-insets: 0;
+    -fx-border-width: 2px;
+}
+
+.sessionDataInputValid {
+    -fx-border-color: transparent transparent #313c49 transparent;
+}
+
+.sessionDataInputValid:focused {
+    -fx-border-color: transparent transparent #5d8dbd transparent;
+}
+
+.sessionDataInputWrong {
+    -fx-border-color: transparent transparent #ef5959 transparent;
+}

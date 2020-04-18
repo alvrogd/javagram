@@ -4,27 +4,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="340.0" styleClass="sidebarItem" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="entryContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleClick" prefHeight="60.0" prefWidth="320.0" styleClass="sidebarItem" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.UserEntryController">
    <children>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="250.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="250.0" styleClass="leftContainer">
          <children>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="250.0">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="250.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="250.0">
-                     <Label styleClass="headerText" text="Item header" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="250.0">
+                     <Label fx:id="header" styleClass="headerText" text="Item header" />
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="250.0">
-                     <Label styleClass="descriptionText" text="Item description" />
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="250.0">
+                     <Label fx:id="description" styleClass="descriptionText" text="Item description" />
                   </HBox>
                </children>
             </VBox>
          </children>
       </HBox>
-         <VBox>
-            <HBox alignment="CENTER_RIGHT" layoutX="250.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="90.0">
-               <Label styleClass="dateText" text="11:55" />
+         <VBox styleClass="rightContainer">
+            <HBox alignment="CENTER_RIGHT" layoutX="250.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="90.0">
+               <Label fx:id="time" styleClass="dateText" text="11:55" />
             </HBox>
-            <HBox alignment="CENTER_RIGHT" layoutX="250.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="90.0">
+            <HBox alignment="CENTER_RIGHT" layoutX="250.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="90.0">
             </HBox>
          </VBox>
    </children>

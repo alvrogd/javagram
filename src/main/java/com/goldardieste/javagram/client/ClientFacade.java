@@ -41,7 +41,9 @@ public class ClientFacade implements IServerNotificationsListener {
 
     /**
      * Initializes an empty {@link ClientFacade} that will establish a connection to the specified server. The client
-     * must log in or sign up for a Javagram user account before performing any other operation.
+     * must log in or sign up for a Javagram user account before performing any other operation. After initializing the
+     * object, it is strongly recommended to consider executing {@link #setLocalTunnelsListener(LocalTunnelsListener)}
+     * and {@link #setRemoteUsersListener(RemoteUsersListener)} to fully configure the client's back-end.
      *
      * @param rmiRemoteAddress         address where the Javagram server can be located.
      * @param rmiRemotePort            port where the Javagram server can be located.
@@ -494,12 +496,11 @@ public class ClientFacade implements IServerNotificationsListener {
      * Asks the Javagram server to terminate a friendship, as long as it existed previously between the client and the
      * remote user. The remote user will also be notified about it if he is online.
      *
-     * @param token      identifies the user on whose behalf the operation will be performed.
      * @param remoteUser name by which the client's friend request can be identified.
      * @throws InvalidClientSessionException  if the current client is not logged in as a Javagram user.
      * @throws ClientOperationFailedException if the operation could not be completed successfully.
      */
-    public void endFriendship(UserToken token, String remoteUser) throws ClientOperationFailedException {
+    public void endFriendship(String remoteUser) throws ClientOperationFailedException {
 
         if (isSessionInitiated()) {
 
@@ -579,5 +580,24 @@ public class ClientFacade implements IServerNotificationsListener {
         } else {
             this.currentUserFacade.updateRemoteUserStatus(remoteUser.getUsername(), remoteUser.getStatus());
         }
+    }
+
+    /**
+     * Updates the {@link LocalTunnelsListener} that all {@link LocalUserTunnel} will use when receiving data.
+     *
+     * @param localTunnelsListener the new {@link LocalTunnelsListener}.
+     */
+    public void setLocalTunnelsListener(LocalTunnelsListener localTunnelsListener) {
+        CurrentUserFacade.setLocalTunnelsListener(localTunnelsListener);
+    }
+
+    /**
+     * Updates the {@link RemoteUsersListener} that {@link #currentUserFacade} will use when modifying the currently
+     * stored {@link RemoteUser}s.
+     *
+     * @param remoteUsersListener the new {@link RemoteUsersListener}.
+     */
+    public void setRemoteUsersListener(RemoteUsersListener remoteUsersListener) {
+        this.currentUserFacade.setRemoteUsersListener(remoteUsersListener);
     }
 }

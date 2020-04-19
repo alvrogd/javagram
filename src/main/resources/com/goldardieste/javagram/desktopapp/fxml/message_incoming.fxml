@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
+
+<HBox maxWidth="-Infinity" minHeight="-Infinity" prefHeight="60.0" prefWidth="842.0" styleClass="message" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.MessageController">
+   <children>
+      <VBox minHeight="-Infinity" prefHeight="60.0">
+         <children>
+            <HBox minHeight="-Infinity" prefHeight="30.0">
+               <children>
+                  <TextFlow minHeight="30.0" minWidth="80.0" nodeOrientation="LEFT_TO_RIGHT" styleClass="incomingMessage">
+                     <children>
+                        <Label fx:id="content" styleClass="messageText" text="Label" textOverrun="CLIP" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0">
+               <children>
+                  <Label fx:id="time" styleClass="dateText" text="11:15 PM" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>

@@ -704,6 +704,9 @@ public class UsersDAO {
             case FRIENDSHIP_RECEIVED:
                 updateUsersStatusSentFriendship(connection, secondUser, firstUser);
                 break;
+            case NOT_RELATED:
+                updateUsersStatusNotRelated(connection, firstUser, secondUser);
+                break;
         }
     }
 
@@ -743,7 +746,7 @@ public class UsersDAO {
         // If not petition was made by the second user, the first statement will not have made any changes in the
         // database, and so this statement will not make any changes
         String statementUpdate = "UPDATE have_relation SET status=" +
-                StatusTypeUserDAO.ACCEPTED_FRIENDSHIP.getDaoValue() + " WHERE sender=?, receiver=?";
+                StatusTypeUserDAO.ACCEPTED_FRIENDSHIP.getDaoValue() + " WHERE sender=? AND receiver=?";
         PreparedStatement stmUpdate = null;
 
         try {
@@ -753,7 +756,6 @@ public class UsersDAO {
             stmInsert.setString(2, secondUser);
             stmInsert.setString(3, secondUser);
             stmInsert.setString(4, firstUser);
-
 
             stmInsert.executeUpdate();
 
@@ -806,7 +808,7 @@ public class UsersDAO {
         // - The petition could already be sent -> the statement would not change anything
         // - The friendship could already be established -> the statement would erase it if it executed
         String statement = "INSERT INTO have_relation(sender, receiver, status) VALUES (?, ?, " +
-                StatusTypeUserDAO.ACCEPTED_FRIENDSHIP.getDaoValue() + ")";
+                StatusTypeUserDAO.FRIENDSHIP_SENT.getDaoValue() + ")";
         PreparedStatement stm = null;
 
         try {

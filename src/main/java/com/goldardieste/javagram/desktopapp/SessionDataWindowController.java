@@ -157,22 +157,15 @@ public class SessionDataWindowController extends AbstractController {
 
                 // If everything goes well, the main window is loaded
                 MainWindowController controller = (MainWindowController) loadNewScene("main_window");
-                controller.prueba();
+                controller.setClientFacade(this.clientFacade);
+
+                // So that all resources are properly freed when the application ends its execution
+                getStage().setOnCloseRequest(event -> controller.handleClosing());
 
             } catch (ClientOperationFailedException exception) {
                 exception.printStackTrace();
             }
         }
-
-
-        // TODO
-        // The Controller used for the Model-View-Controller architecture that will handle the chat's features is
-        // initialized
-        //CommunicationHandler communicationHandler = new CommunicationHandler(chatController,
-        //this.fieldAddress.getText(), Integer.parseInt(this.fieldPort.getText()));
-
-        // So that all resources are properly freed when the application ends its execution
-        //primaryStage.setOnCloseRequest(e -> communicationHandler.handleClosing());
     }
 
     /**

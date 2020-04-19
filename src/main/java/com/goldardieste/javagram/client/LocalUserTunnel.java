@@ -18,6 +18,11 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
      */
     private final String remoteUser;
 
+    /**
+     * If it is not null, all {@link LocalUserTunnel} will forward to it all incoming data.
+     */
+    private static LocalTunnelsListener localTunnelsListener;
+
 
     /* ----- Constructor ----- */
 
@@ -41,6 +46,19 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
     @Override
     public void transmitMessage(String message) {
 
-        System.out.println("The " + this.remoteUser + " user has sent the following message: " + message);
+        if(LocalUserTunnel.localTunnelsListener != null) {
+            LocalUserTunnel.localTunnelsListener.forwardIncomingMessage(this.remoteUser, message);
+        }
+
+        System.out.println("The user '" + this.remoteUser + "' has sent the following message: " + message);
+    }
+
+    /**
+     * Updates the value of {@link #localTunnelsListener}.
+     *
+     * @param localTunnelsListener new {@link #localTunnelsListener}.
+     */
+    public static void setLocalTunnelsListener(LocalTunnelsListener localTunnelsListener) {
+        LocalUserTunnel.localTunnelsListener = localTunnelsListener;
     }
 }

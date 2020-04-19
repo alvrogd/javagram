@@ -5,6 +5,8 @@ package com.goldardieste.javagram.common;
  */
 public enum StatusType {
 
+    /* ----- Enums ----- */
+
     /**
      * The remote user is online.
      */

@@ -71,6 +71,12 @@ public class CurrentUserFacade {
      */
     private final ReentrantLock tunnelsLock;
 
+    /**
+     * {@link RemoteUsersListener} that the object will use, if it is not null, when modifying {@link #remoteUserMap}
+     * and/or {@link #statusTypeSetMap}.
+     */
+    private RemoteUsersListener remoteUsersListener;
+
 
     /* ----- Constructor ----- */
 
@@ -165,6 +171,10 @@ public class CurrentUserFacade {
             // The lock must always be released
             this.storedUsersLock.unlock();
         }
+
+        if(this.remoteUsersListener != null) {
+            this.remoteUsersListener.forwardRemoteUserChange(remoteUser);
+        }
     }
 
     /**
@@ -185,6 +195,12 @@ public class CurrentUserFacade {
         } finally {
             // The lock must always be released
             this.storedUsersLock.unlock();
+        }
+
+        for (RemoteUser remoteUser : remoteUsers) {
+            if(this.remoteUsersListener != null) {
+                this.remoteUsersListener.forwardRemoteUserChange(remoteUser);
+            }
         }
     }
 
@@ -210,6 +226,12 @@ public class CurrentUserFacade {
         } finally {
             // The lock must always be released
             this.storedUsersLock.unlock();
+        }
+
+        for (RemoteUser remoteUser : remoteUsers) {
+            if(this.remoteUsersListener != null) {
+                this.remoteUsersListener.forwardRemoteUserChange(remoteUser);
+            }
         }
     }
 
@@ -254,6 +276,10 @@ public class CurrentUserFacade {
             // The lock must always be released
             this.storedUsersLock.unlock();
         }
+
+        if(this.remoteUsersListener != null) {
+            this.remoteUsersListener.forwardRemoteUserChange(remoteUser);
+        }
     }
 
     /**
@@ -263,10 +289,12 @@ public class CurrentUserFacade {
      */
     public void removeRemoteUser(String remoteUser) {
 
+        RemoteUser removedValue = null;
+
         this.storedUsersLock.lock();
 
         try {
-            RemoteUser removedValue = this.remoteUserMap.remove(remoteUser);
+            removedValue = this.remoteUserMap.remove(remoteUser);
 
             // If the user was present before, it will also be present in the following collection
             if (removedValue != null) {
@@ -276,6 +304,10 @@ public class CurrentUserFacade {
         } finally {
             // The lock must always be released
             this.storedUsersLock.unlock();
+        }
+
+        if(this.remoteUsersListener != null) {
+            this.remoteUsersListener.forwardRemoteUserDeletion(removedValue);
         }
     }
 
@@ -536,11 +568,20 @@ public class CurrentUserFacade {
     }
 
     /**
-     * Acquires a lock over any collection that contains {@link RemoteUser}, so that they cannot be modified or
-     * accessed. This operation is supposed to execute only to provide consistency when the client desires to update the current remote users
-     * after a
+     * Updates the {@link LocalTunnelsListener} that all {@link LocalUserTunnel} will use when receiving data.
+     *
+     * @param localTunnelsListener the new {@link LocalTunnelsListener}.
      */
-    public void prepareChainedOperationsUsers() {
+    public static void setLocalTunnelsListener(LocalTunnelsListener localTunnelsListener) {
+        LocalUserTunnel.setLocalTunnelsListener(localTunnelsListener);
+    }
 
+    /**
+     * Updates the value of {@link #remoteUsersListener}.
+     *
+     * @param remoteUsersListener new {@link #remoteUsersListener}.
+     */
+    public void setRemoteUsersListener(RemoteUsersListener remoteUsersListener) {
+        this.remoteUsersListener = remoteUsersListener;
     }
 }

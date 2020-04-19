@@ -1,21 +1,39 @@
 .rootContainer {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #17212B;
 }
 
 
 /* ----- Sidebar menu == left-most buttons ----- */
 .sidebarMenuContainer {
     -fx-background-color: #0E1621;
+    -fx-text-fill: #768c9e;
 }
 
-.sidebarMenuSelectedItem {
+.sidebarMenuItem .button {
+    -fx-background-color: transparent;
+}
+
+.sidebarMenuItem:hover {
+    -fx-cursor: hand;
+}
+
+.sidebarMenuItem:hover {
+    -fx-text-fill: #5EB5F7;
+}
+
+.sidebarMenuItemLogout .button {
+    -fx-graphic: url(../icons/test_icon.png);
+}
+
+.sidebarMenuItemSelected {
     -fx-background-color: #25303E;
 }
 
-.sidebarMenuSelectedItem .label {
+.sidebarMenuItemSelected .label {
     -fx-font-size: 12px;
     -fx-text-fill: #5EB5F7;
 }
+
 /* ----- END ----- */
 
 
@@ -43,8 +61,13 @@
     -fx-padding: 5px 10px 5px 5px;
 }
 
-.sidebarItemSelected, .sidebarItem:hover {
-    -fx-background-color: #5288c1;
+.sidebarItemSelected {
+    /* Overrides the next selector (JavaFX's CSS does not have CSS's ':not' selector */
+    -fx-background-color: #5288c1 !important;
+}
+
+.sidebarItem:hover {
+    -fx-background-color: #202b36;
 }
 
 .sidebarItemSelected .descriptionText, .sidebarItemSelected .dateText,
@@ -52,23 +75,51 @@
     -fx-font-size: 12px;
     -fx-text-fill: #FFFFFF;
 }
+
+.context-menu {
+    -fx-background-color: #17212B;
+}
+
+/* TODO use classes instead of the raw object */
+.menu-item .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.menu-item:focused {
+    -fx-background-color: #202b36;
+}
 /* ----- END ----- */
 
 
 /* ----- Where messages are displayed ----- */
+.bigText { /* Empty chat warning */
+    -fx-font-size: 24px;
+    -fx-text-fill: #FFFFFF;
+}
+
 .chatContainer {
     -fx-background-color: #0E1621;
 }
 
+.incomingMessage {
+    -fx-background-color: #2b5278;
+    -fx-shape: "m 46.030545,129.18592 h 48.380952 c 3.54546,0.23355 5.32763,-1.59167 5.14193,-4.67449 V 105.1123 c -0.4058, -3.73565 -2.47064, -4.56641 -5.14193, -4.90821 H 50.705033 c -2.572701, 0.2361 -4.604321, 1.68288 -4.674488, 4.90821 v 19.39913 c -0.436089, 3.14572 -2.890695, 3.57304 -4.908212, 4.67449 z ";
+}
+
 .outgoingMessage {
-    -fx-background-color: #2B5278;
+    -fx-background-color: #182533;
     -fx-shape: "M 94.658379,129.18587 H 46.277427 c -3.545458,0.23354 -5.32763,-1.59167 -5.14193,-4.67449 v -19.39913 c 0.405797, -3.73565 2.470637, -4.56641 5.14193, -4.90821 h 43.706464 c 2.572701, 0.2361 4.604321, 1.68288 4.674488, 4.90821 v 19.39913 c 0.436089, 3.14572 2.890695, 3.57304 4.908212, 4.67449 z ";
 }
 
 /* The content of each message is provided with some margin */
-.message .contentContainer {
+.incomingMessage {
     -fx-text-fill: #FFFFFF;
-    -fx-padding: 10px 30px 20px 15px;
+    -fx-padding: 6px 10px 10px 20px;
+}
+
+.outgoingMessage {
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 6px 20px 10px 10px;
 }
 
 .message .messageText {
@@ -88,29 +139,45 @@
     -fx-text-fill: #FFFFFF;
 }
 
+/* Or where the user may type a username to sent to him a friendship request */
+.defaultInput {
+    -fx-padding: 0 19;
+    -fx-background-color: #0E1621;
+    -fx-background-insets: 0, 6, 0;
+    -fx-background-radius: 8em;
+    -fx-text-fill: #FFFFFF;
+}
+
 #inputMessage .content {
     -fx-background-color: #17212b;
     -fx-text-alignment: center;
 }
 
-#inputMessage:focused .content {
+.defaultInput .content {
+    -fx-background-color: #0E1621;
+    -fx-text-alignment: center;
+}
+
+#inputMessage:focused .content, .defaultInput:focused .content {
     -fx-background-color: #17212b;
 }
 
 /* All scroll bars are removed from the input area */
-#inputMessage .scroll-pane {
+#inputMessage .scroll-pane, .defaultInput .scroll-pane {
     -fx-background-color: transparent;
 }
 
-#inputMessage .scroll-pane > .viewport, #inputMessage > .viewport {
+#inputMessage .scroll-pane > .viewport, #inputMessage > .viewport,
+.defaultInput .scroll-pane > .viewport, .defaultInput > .viewport{
     -fx-background-color: transparent;
 }
 
-#inputMessage .scroll-pane .scroll-bar:vertical, #inputMessage .scroll-bar:vertical {
+#inputMessage .scroll-pane .scroll-bar:vertical, #inputMessage .scroll-bar:vertical,
+.defaultInput .scroll-pane .scroll-bar:vertical, .defaultInput .scroll-bar:vertical {
     -fx-background-color: inherit;
 }
 
-#inputMessage .scroll-pane .scroll-bar:vertical .track {
+#inputMessage .scroll-pane .scroll-bar:vertical .track, .defaultInput .scroll-pane .scroll-bar:vertical .track {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-background-radius: 0em;
@@ -118,7 +185,9 @@
 }
 
 #inputMessage .scroll-pane .scroll-bar:vertical .increment-button,
-#inputMessage .scroll-pane .scroll-bar:vertical .decrement-button {
+#inputMessage .scroll-pane .scroll-bar:vertical .decrement-button,
+.defaultInput .scroll-pane .scroll-bar:vertical .increment-button,
+.defaultInput .scroll-pane .scroll-bar:vertical .decrement-button {
     -fx-background-color: transparent;
     -fx-background-radius: 0em;
     -fx-padding: 0 0 10 0;
@@ -126,12 +195,15 @@
 }
 
 #inputMessage .scroll-pane .scroll-bar .increment-arrow,
-#inputMessage .scroll-pane .scroll-bar .decrement-arrow {
+#inputMessage .scroll-pane .scroll-bar .decrement-arrow,
+.defaultInput .scroll-pane .scroll-bar .increment-arrow,
+.defaultInput .scroll-pane .scroll-bar .decrement-arrow {
     -fx-shape: " ";
     -fx-padding: 0;
 }
 
-#inputMessage .scroll-pane .scroll-bar:vertical .thumb {
+#inputMessage .scroll-pane .scroll-bar:vertical .thumb,
+.defaultInput .scroll-pane .scroll-bar:vertical .thumb {
     -fx-background-color: transparent;
 }
 
@@ -145,6 +217,7 @@
     -fx-effect: dropshadow(gaussian, rgba(82, 136, 193, 0.5), 0.5, 0.5, 2, 2);
     -fx-cursor: hand;
 }
+
 /* ----- END ----- */
 
 
@@ -202,4 +275,5 @@
     -fx-pref-width: 16.5;
     -fx-padding: 4;
 }
+
 /* ----- END ----- */

@@ -40,7 +40,7 @@ public enum StatusTypeUserDAO {
     private final int daoValue;
 
 
-    /* ----- Attributes ----- */
+    /* ----- Constructor ----- */
 
     /**
      * Initializes a prefixed {@link StatusTypeUserDAO}.

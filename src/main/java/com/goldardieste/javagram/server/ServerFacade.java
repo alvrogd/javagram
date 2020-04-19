@@ -518,6 +518,7 @@ public class ServerFacade implements IServer {
             if (this.usersDAO.checkUsersStatus(connection, username, remoteUser,
                     StatusTypeUserDAO.ACCEPTED_FRIENDSHIP)) {
 
+                System.out.println("Removein");
                 this.usersDAO.updateUsersStatus(connection, username, remoteUser,
                         StatusTypeUserDAO.NOT_RELATED);
 

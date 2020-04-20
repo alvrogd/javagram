@@ -11,7 +11,8 @@
       <Label alignment="CENTER" layoutY="160.0" prefHeight="20.0" prefWidth="600.0" styleClass="javagramTitle" text="Javagram" textAlignment="CENTER" />
       <TextField fx:id="fieldUsername" layoutX="175.0" layoutY="302.0" onKeyReleased="#checkUsername" prefHeight="28.0" prefWidth="250.0" promptText="Username" styleClass="sessionDataInput, sessionDataInputValid" />
       <PasswordField fx:id="fieldPassword" layoutX="175.0" layoutY="360.0" onKeyReleased="#checkPassword" prefHeight="26.0" prefWidth="250.0" promptText="Password" styleClass="sessionDataInput, sessionDataInputValid" />
-      <Button layoutX="229.0" layoutY="470.0" mnemonicParsing="false" onMouseClicked="#initiateSession" styleClass="loginButton" text="GO ON!" />
+      <Button layoutX="229.0" layoutY="490.0" mnemonicParsing="false" onMouseClicked="#initiateSession" styleClass="loginButton" text="GO ON!" />
       <Button layoutX="60.0" layoutY="60.0" mnemonicParsing="false" onMouseClicked="#goSessionModeWindow" prefWidth="19.0" styleClass="arrowBack" />
+      <Label fx:id="labelWarning" alignment="TOP_CENTER" layoutY="412.0" prefHeight="40.0" prefWidth="600.0" styleClass="warningMessage" textAlignment="CENTER" visible="false" />
    </children>
 </AnchorPane>

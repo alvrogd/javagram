@@ -12,10 +12,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -27,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 // TODO coded in a bit of a rush, so the best choices have not been definitely made
-
+// TODO message input should grow to comfortably type long messages
 /**
  * This class represents the FXML controller that orchestrates the main window of the desktop app; that is, provides
  * most of the app's funcionality to the user.
@@ -123,6 +120,12 @@ public class MainWindowController extends AbstractController implements LocalTun
      */
     @FXML
     private TextArea textAreaMessage;
+
+    /**
+     * Button that sends the currently typed message to the selected remote user.
+     */
+    @FXML
+    private Button btnSend;
 
     /**
      * Where all messages for a certain chat are contained.
@@ -309,8 +312,9 @@ public class MainWindowController extends AbstractController implements LocalTun
      * Sends a friendship request to the specified remote user, and shows again all the user entries.
      *
      * @param remoteUser name by which the remote user can be identified.
+     * @return if the request could be sent successfully.
      */
-    public void sendFriendshipRequest(String remoteUser) {
+    public boolean sendFriendshipRequest(String remoteUser) {
 
         boolean successful = false;
 
@@ -324,9 +328,9 @@ public class MainWindowController extends AbstractController implements LocalTun
             this.newFriendshipInputActive = false;
             successful = true;
 
-            // TODO show warning when failed
         } catch (ClientOperationFailedException exception) {
             exception.printStackTrace();
+
 
         } finally {
             this.newFriendshipInputLock.unlock();
@@ -336,6 +340,8 @@ public class MainWindowController extends AbstractController implements LocalTun
         if (successful) {
             activateFilterRequests(null);
         }
+
+        return successful;
     }
 
     /**
@@ -454,18 +460,19 @@ public class MainWindowController extends AbstractController implements LocalTun
             }
 
             // The chat history is redrawn even if the selected user is not online, to show the "no messages" warning
-            synchronized (this.initiatedChats) {
-                regenerateChatHistory(this.initiatedChats.get(userEntryController.getUsername()));
+            // Thread-safe access is guaranteed through this.retrievedRemoteUsers
+            regenerateChatHistory(this.initiatedChats.get(userEntryController.getUsername()));
+
+            // The previous selected entry is no longer highlighted, in favour of the new one
+            if (this.currentSelectedEntry != null) {
+                this.currentSelectedEntry.removeHighlighting();
             }
-        }
 
-        // The previous selected entry is no longer highlighted, in favour of the new one
-        if (this.currentSelectedEntry != null) {
-            this.currentSelectedEntry.removeHighlighting();
-        }
+            this.currentSelectedEntry = userEntryController;
+            this.currentSelectedEntry.addHighlighting();
 
-        this.currentSelectedEntry = userEntryController;
-        this.currentSelectedEntry.addHighlighting();
+            updateMessageArea();
+        }
     }
 
     /**
@@ -585,10 +592,6 @@ public class MainWindowController extends AbstractController implements LocalTun
                     } catch (ClientOperationFailedException exception) {
                         exception.printStackTrace();
                     }
-
-                } else {
-                    // TODO show warning when user is no longer online
-                    System.err.println("No current user has been selected to send the message");
                 }
             }
         }
@@ -617,7 +620,7 @@ public class MainWindowController extends AbstractController implements LocalTun
      */
     private void registerMessageInChatHistory(String remoteUser, String message, boolean outgoing) {
 
-        synchronized (this.initiatedChats) {
+        synchronized (this.retrievedRemoteUsers) {
 
             ChatHistory chatHistory = this.initiatedChats.get(remoteUser);
 
@@ -630,7 +633,9 @@ public class MainWindowController extends AbstractController implements LocalTun
             // The given message is registered
             chatHistory.addMessage(message, outgoing);
 
-            regenerateChatHistory(chatHistory);
+            if(this.currentSelectedEntry != null && this.currentSelectedEntry.getUsername().equals(remoteUser)) {
+                regenerateChatHistory(chatHistory);
+            }
         }
     }
 
@@ -798,6 +803,14 @@ public class MainWindowController extends AbstractController implements LocalTun
                                         remoteUser.getStatus().toString());
                                 controller.setMainWindowController(this);
 
+                                // Due to removing all entries to generate them again in every minor change, the one
+                                // that is equal to the previously selected one must be set as the selected one
+                                if (this.currentSelectedEntry != null &&
+                                        this.currentSelectedEntry.getUsername().equals(controller.getUsername())) {
+                                    this.currentSelectedEntry = controller;
+                                    this.currentSelectedEntry.addHighlighting();
+                                }
+
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -807,6 +820,54 @@ public class MainWindowController extends AbstractController implements LocalTun
             } finally {
                 this.newFriendshipInputLock.unlock();
             }
+
+            updateMessageArea();
         });
+    }
+
+    /**
+     * Checks if the currently selected remote user is online or not:
+     * <p>
+     * - If it is only, the user may type in a message in {@link #textAreaMessage} and send it.
+     * - Otherwise, both {@link #textAreaMessage} and {@link #btnSend} are disabled, showing a message that says the
+     * selected user is not online if it is a friend, or that the user is not friends with him yet.
+     */
+    private void updateMessageArea() {
+
+        boolean entryIsSelected = this.currentSelectedEntry != null;
+        StatusType status = entryIsSelected ?
+                this.retrievedRemoteUsers.get(this.currentSelectedEntry.getUsername()).getStatus() : null;
+
+        // If no user has been selected or if the selected one is not online
+        if(!entryIsSelected || !status.equals(StatusType.ONLINE)) {
+
+            this.btnSend.setDisable(true);
+            this.textAreaMessage.setDisable(true);
+
+            // If no user has been selected
+            if(!entryIsSelected) {
+                this.textAreaMessage.setText("No user has been selected");
+            }
+
+            // If the selected one is not online
+            else {
+                // If the selected one is a friend that is offline
+                if(status.equals(StatusType.DISCONNECTED)) {
+                    this.textAreaMessage.setText("The selected friend is not online");
+                }
+
+                // Otherwise, the user and the client are not current friends, so they cannot communicate
+                else {
+                    this.textAreaMessage.setText("You are not friends with the selected user");
+                }
+            }
+        }
+
+        // If the selected user is online
+        else {
+            this.btnSend.setDisable(false);
+            this.textAreaMessage.setDisable(false);
+            this.textAreaMessage.clear();
+        }
     }
 }

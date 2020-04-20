@@ -5,6 +5,7 @@ import com.goldardieste.javagram.common.*;
 import java.rmi.RemoteException;
 import java.util.concurrent.locks.ReentrantLock;
 
+// TODO catch and throw exception when the server is not reachable
 /**
  * This class holds the main logic of the Javagram client. Therefore, it orchestrates any operation that the user may
  * request via the GUI so that it is completed successfully.
@@ -68,8 +69,6 @@ public class ClientFacade implements IServerNotificationsListener {
 
 
     /* ----- Methods ----- */
-
-    // TODO implement all methods
 
     /**
      * Checks if the client has successfully identified in a Javagram server as a Javagram user.

@@ -32,7 +32,7 @@ public class MessageController {
      */
     public void updateContents(String content) {
 
-        this.content.setText(adaptText(content));
+        this.content.setText(/*adaptText(*/content/*)*/);
     }
 
     /**

@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<HBox alignment="CENTER" fx:controller="com.goldardieste.javagram.desktopapp.InputNewFriendController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="326.0" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="326.0" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.InputNewFriendController">
    <children>
-      <TextField fx:id="inputNewFriend" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Username" styleClass="defaultInput" />
-      <Button id="btnSend" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#sendFriendshipRequest" prefHeight="26.0" prefWidth="26.0" />
+      <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="240.0" prefWidth="200.0" />
+      <HBox>
+         <children>
+            <TextField fx:id="inputNewFriend" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#checkUsername" prefHeight="30.0" prefWidth="300.0" promptText="Username" styleClass="defaultInput" />
+            <Button id="btnSend" alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#sendFriendshipRequest" prefHeight="26.0" prefWidth="26.0" />
+         </children>
+      </HBox>
+      <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" />
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="326.0">
+         <children>
+            <Label fx:id="labelWarning" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="326.0" styleClass="warningMessage" text="Could not send the request. ¿Is the username" textAlignment="CENTER" visible="false" />
+         </children>
+      </HBox>
    </children>
-</HBox>
+</VBox>

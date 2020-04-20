@@ -30,5 +30,34 @@ public enum StatusType {
     /**
      * The two users are not related at all. It will be represented in the database as the absence of a relation.
      */
-    NOT_RELATED
+    NOT_RELATED;
+
+
+    /* ----- Methods ----- */
+
+    @Override
+    public String toString() {
+
+        String result = null;
+
+        switch (this) {
+            case ONLINE:
+                result = "Online";
+                break;
+            case DISCONNECTED:
+                result = "Disconnected";
+                break;
+            case FRIENDSHIP_SENT:
+                result = "Friendship sent";
+                break;
+            case FRIENDSHIP_RECEIVED:
+                result = "Friendship received";
+                break;
+            case NOT_RELATED:
+                result = "Not related";
+                break;
+        }
+
+        return result;
+    }
 }

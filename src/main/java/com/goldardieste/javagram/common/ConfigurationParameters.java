@@ -6,8 +6,6 @@ package com.goldardieste.javagram.common;
  */
 public class ConfigurationParameters {
 
-    // TODO insert final values
-
     /**
      * Address where the RMI registry that hosts the server can be located.
      */
@@ -26,7 +24,7 @@ public class ConfigurationParameters {
     /**
      * Identifier of the driver that will be used to contact the server's database.
      */
-    private final String JDBC_DRIVER = "org.postgresql.Driver";
+    public static final String JDBC_DRIVER = "org.postgresql.ds.PGSimpleDataSource";
 
     /**
      * URL where the server's database can be located.
@@ -41,7 +39,7 @@ public class ConfigurationParameters {
     /**
      * Name by which the server's database can be located.
      */
-    public static final String JDBC_DATABASE_URL = "javagram";
+    public static final String JDBC_DATABASE = "javagram";
 
     /**
      * Username to log into an account in the server's database.

@@ -6,6 +6,7 @@ import com.goldardieste.javagram.common.ConfigurationParameters;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -43,6 +44,12 @@ public class SessionDataWindowController extends AbstractController {
      */
     @FXML
     private PasswordField fieldPassword;
+
+    /**
+     * Used to show the user warnings about failed log in/sign up attempts.
+     */
+    @FXML
+    private Label labelWarning;
 
 
     /* ----- Setters ----- */
@@ -151,6 +158,9 @@ public class SessionDataWindowController extends AbstractController {
      */
     public void initiateSession(Event e) throws IOException {
 
+        // The previous warning is hidden while the request is handled
+        this.labelWarning.setVisible(false);
+
         // Both username and password must be valid to proceed
         String username = this.fieldUsername.getText().trim();
         String password = this.fieldPassword.getText().trim();
@@ -179,6 +189,18 @@ public class SessionDataWindowController extends AbstractController {
 
             } catch (ClientOperationFailedException exception) {
                 exception.printStackTrace();
+
+                // If the user was going to sign up
+                if (this.signUpMode) {
+                    this.labelWarning.setText("Could not sign up. The Javagram server could not be\nreachable, or " +
+                            "the username may already be taken.");
+                }
+                else {
+                    this.labelWarning.setText("Could not log in. The Javagram server could not be \nreachable, or " +
+                            "the credentials could be wrong.");
+                }
+
+                this.labelWarning.setVisible(true);
             }
         }
     }

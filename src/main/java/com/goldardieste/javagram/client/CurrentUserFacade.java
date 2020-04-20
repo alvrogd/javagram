@@ -21,7 +21,7 @@ public class CurrentUserFacade {
     /**
      * Username that identifies the Javagram user who has opened a session in the client.
      */
-    private final String username;
+    private final String identifiedUser;
 
     /**
      * Contains all the {@link LocalUserTunnel} that the client has opened to that the intended remote users may
@@ -88,7 +88,7 @@ public class CurrentUserFacade {
      */
     public CurrentUserFacade(String username) {
 
-        this.username = username;
+        this.identifiedUser = username;
         this.openedTunnels = new HashMap<>();
         this.receivedTunnels = new HashMap<>();
 
@@ -100,6 +100,18 @@ public class CurrentUserFacade {
         this.remoteUserMap = new HashMap<>();
         this.storedUsersLock = new ReentrantLock();
         this.tunnelsLock = new ReentrantLock();
+    }
+
+
+    /* ----- Getters ----- */
+
+    /**
+     * Retrieves the current {@link #identifiedUser}.
+     *
+     * @return {@link #identifiedUser}.
+     */
+    public String getIdentifiedUser() {
+        return identifiedUser;
     }
 
 
@@ -172,7 +184,7 @@ public class CurrentUserFacade {
             this.storedUsersLock.unlock();
         }
 
-        if(this.remoteUsersListener != null) {
+        if (this.remoteUsersListener != null) {
             this.remoteUsersListener.forwardRemoteUserChange(remoteUser);
         }
     }
@@ -198,7 +210,7 @@ public class CurrentUserFacade {
         }
 
         for (RemoteUser remoteUser : remoteUsers) {
-            if(this.remoteUsersListener != null) {
+            if (this.remoteUsersListener != null) {
                 this.remoteUsersListener.forwardRemoteUserChange(remoteUser);
             }
         }
@@ -229,7 +241,7 @@ public class CurrentUserFacade {
         }
 
         for (RemoteUser remoteUser : remoteUsers) {
-            if(this.remoteUsersListener != null) {
+            if (this.remoteUsersListener != null) {
                 this.remoteUsersListener.forwardRemoteUserChange(remoteUser);
             }
         }
@@ -277,7 +289,7 @@ public class CurrentUserFacade {
             this.storedUsersLock.unlock();
         }
 
-        if(this.remoteUsersListener != null) {
+        if (this.remoteUsersListener != null) {
             this.remoteUsersListener.forwardRemoteUserChange(remoteUser);
         }
     }
@@ -306,7 +318,7 @@ public class CurrentUserFacade {
             this.storedUsersLock.unlock();
         }
 
-        if(this.remoteUsersListener != null) {
+        if (this.remoteUsersListener != null) {
             this.remoteUsersListener.forwardRemoteUserDeletion(removedValue);
         }
     }
@@ -583,5 +595,31 @@ public class CurrentUserFacade {
      */
     public void setRemoteUsersListener(RemoteUsersListener remoteUsersListener) {
         this.remoteUsersListener = remoteUsersListener;
+    }
+
+    /**
+     * Performs any tasks that are required to successfully stop the execution of the Javagram client's back-end.
+     */
+    public void haltExecution() {
+
+        // All local tunnels that have been opened are now closed
+        this.tunnelsLock.lock();
+
+        try {
+            for (LocalUserTunnel localUserTunnel : this.openedTunnels.values()) {
+
+                try {
+                    UnicastRemoteObject.unexportObject(localUserTunnel, true);
+
+                } catch (NoSuchObjectException e) {
+                    System.err.println("A local user tunnel could not be unexported");
+                    e.printStackTrace();
+                }
+            }
+
+        } finally {
+            // The lock must always be released
+            this.tunnelsLock.unlock();
+        }
     }
 }

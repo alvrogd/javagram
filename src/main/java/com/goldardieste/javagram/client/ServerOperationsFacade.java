@@ -4,6 +4,7 @@ import com.goldardieste.javagram.common.*;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -210,5 +211,18 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
     @Override
     public void updateRemoteUserStatus(RemoteUser remoteUser) throws RemoteException {
         this.clientFacade.updateRemoteUserStatus(remoteUser);
+    }
+
+    /**
+     * Unexports the client's proxy so that it is no longer a remote object.
+     */
+    public void haltExecution() {
+
+        try {
+            UnicastRemoteObject.unexportObject(this, true);
+        } catch (NoSuchObjectException e) {
+            System.err.println("The client's proxy could not be successfully unexported");
+            e.printStackTrace();
+        }
     }
 }

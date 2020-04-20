@@ -883,4 +883,12 @@ public class UsersDAO {
             }
         }
     }
+
+    /**
+     * Performs any tasks that are required to successfully stop the execution of the Javagram server.
+     */
+    public void haltExecution() {
+
+        this.hikariDataSource.close();
+    }
 }

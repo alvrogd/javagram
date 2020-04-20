@@ -25,6 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 // TODO coded in a bit of a rush, so the best choices have not been definitely made
 // TODO message input should grow to comfortably type long messages
+
 /**
  * This class represents the FXML controller that orchestrates the main window of the desktop app; that is, provides
  * most of the app's funcionality to the user.
@@ -268,6 +269,7 @@ public class MainWindowController extends AbstractController implements LocalTun
     @FXML
     public void logout(Event e) {
         handleClosing();
+        getStage().close();
     }
 
     /**
@@ -318,7 +320,6 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         boolean successful = false;
 
-        // TODO handle exceptions (already friend, already sent, non existing...)
         this.newFriendshipInputLock.lock();
 
         try {
@@ -330,7 +331,6 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         } catch (ClientOperationFailedException exception) {
             exception.printStackTrace();
-
 
         } finally {
             this.newFriendshipInputLock.unlock();
@@ -421,14 +421,16 @@ public class MainWindowController extends AbstractController implements LocalTun
      */
     public void handleClosing() {
 
-        // TODO implement method -> logout for example
         try {
             this.clientFacade.disconnect();
+            // The app will just end its execution instead of asking the user if he wants to sign up/sign in to a new
+            // account
+            this.clientFacade.haltExecution();
+
         } catch (ClientOperationFailedException exception) {
+            System.err.println("Execution of the Javagram client could not be successfully stopped");
             exception.printStackTrace();
         }
-
-        System.exit(0);
     }
 
     /**
@@ -444,24 +446,7 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         synchronized (this.retrievedRemoteUsers) {
 
-            // When the user clicks on an user entry of a current online friend, a communication with him is
-            // established
-            boolean isOnline = this.retrievedRemoteUsers.get(remoteUser).getStatus().equals(StatusType.ONLINE);
-
-            if (isOnline) {
-                try {
-                    if (!this.clientFacade.isChatInitiated(remoteUser)) {
-                        this.clientFacade.initiateChat(remoteUser);
-                    }
-
-                } catch (ClientOperationFailedException exception) {
-                    exception.printStackTrace();
-                }
-            }
-
-            // The chat history is redrawn even if the selected user is not online, to show the "no messages" warning
-            // Thread-safe access is guaranteed through this.retrievedRemoteUsers
-            regenerateChatHistory(this.initiatedChats.get(userEntryController.getUsername()));
+            initiateAndShowChat(remoteUser);
 
             // The previous selected entry is no longer highlighted, in favour of the new one
             if (this.currentSelectedEntry != null) {
@@ -473,6 +458,34 @@ public class MainWindowController extends AbstractController implements LocalTun
 
             updateMessageArea();
         }
+    }
+
+    /**
+     * Initiates the communication with the specified remote user, which is supposed to be online, and renders again
+     * the chat region to show that communication's contents.
+     *
+     * @param remoteUser name by which the remote user can be identified.
+     */
+    private void initiateAndShowChat(String remoteUser) {
+
+        // When the user clicks on an user entry of a current online friend, a communication with him is
+        // established
+        boolean isOnline = this.retrievedRemoteUsers.get(remoteUser).getStatus().equals(StatusType.ONLINE);
+
+        if (isOnline) {
+            try {
+                if (!this.clientFacade.isChatInitiated(remoteUser)) {
+                    this.clientFacade.initiateChat(remoteUser);
+                }
+
+            } catch (ClientOperationFailedException exception) {
+                exception.printStackTrace();
+            }
+        }
+
+        // The chat history is redrawn even if the selected user is not online, to show the "no messages" warning
+        // Thread-safe access is guaranteed through this.retrievedRemoteUsers
+        regenerateChatHistory(this.initiatedChats.get(remoteUser));
     }
 
     /**
@@ -633,7 +646,7 @@ public class MainWindowController extends AbstractController implements LocalTun
             // The given message is registered
             chatHistory.addMessage(message, outgoing);
 
-            if(this.currentSelectedEntry != null && this.currentSelectedEntry.getUsername().equals(remoteUser)) {
+            if (this.currentSelectedEntry != null && this.currentSelectedEntry.getUsername().equals(remoteUser)) {
                 regenerateChatHistory(chatHistory);
             }
         }
@@ -807,8 +820,16 @@ public class MainWindowController extends AbstractController implements LocalTun
                                 // that is equal to the previously selected one must be set as the selected one
                                 if (this.currentSelectedEntry != null &&
                                         this.currentSelectedEntry.getUsername().equals(controller.getUsername())) {
+
                                     this.currentSelectedEntry = controller;
                                     this.currentSelectedEntry.addHighlighting();
+
+                                    // And, if the user is now online, it could be that he was previously a pending
+                                    // friend, so the communication with him must be established
+                                    if(this.retrievedRemoteUsers.get(this.currentSelectedEntry.getUsername())
+                                            .getStatus().equals(StatusType.ONLINE)) {
+                                        initiateAndShowChat(this.currentSelectedEntry.getUsername());
+                                    }
                                 }
 
                             } catch (IOException e) {
@@ -839,20 +860,20 @@ public class MainWindowController extends AbstractController implements LocalTun
                 this.retrievedRemoteUsers.get(this.currentSelectedEntry.getUsername()).getStatus() : null;
 
         // If no user has been selected or if the selected one is not online
-        if(!entryIsSelected || !status.equals(StatusType.ONLINE)) {
+        if (!entryIsSelected || !status.equals(StatusType.ONLINE)) {
 
             this.btnSend.setDisable(true);
             this.textAreaMessage.setDisable(true);
 
             // If no user has been selected
-            if(!entryIsSelected) {
+            if (!entryIsSelected) {
                 this.textAreaMessage.setText("No user has been selected");
             }
 
             // If the selected one is not online
             else {
                 // If the selected one is a friend that is offline
-                if(status.equals(StatusType.DISCONNECTED)) {
+                if (status.equals(StatusType.DISCONNECTED)) {
                     this.textAreaMessage.setText("The selected friend is not online");
                 }
 

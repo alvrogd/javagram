@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="80.0">
          <children>

@@ -518,7 +518,6 @@ public class ServerFacade implements IServer {
             if (this.usersDAO.checkUsersStatus(connection, username, remoteUser,
                     StatusTypeUserDAO.ACCEPTED_FRIENDSHIP)) {
 
-                System.out.println("Removein");
                 this.usersDAO.updateUsersStatus(connection, username, remoteUser,
                         StatusTypeUserDAO.NOT_RELATED);
 
@@ -657,5 +656,17 @@ public class ServerFacade implements IServer {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Performs any tasks that are required to successfully stop the execution of the Javagram server.
+     */
+    public void haltExecution() {
+
+        // 1. Currently opened sessions -> they will automatically be destroyed, and the server's proxy is supposed to
+        // no longer be able to accept incoming client's requests
+
+        // 2. Database connections
+        this.usersDAO.haltExecution();
     }
 }

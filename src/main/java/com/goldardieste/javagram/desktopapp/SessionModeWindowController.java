@@ -47,5 +47,6 @@ public class SessionModeWindowController extends AbstractController {
 
         SessionDataWindowController controller = (SessionDataWindowController) loadNewScene("session_data_window");
         controller.setSignUpMode(signUp);
+        getStage().setOnCloseRequest(e -> controller.handleClosing());
     }
 }

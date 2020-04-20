@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 import java.util.concurrent.locks.ReentrantLock;
 
 // TODO catch and throw exception when the server is not reachable
+
 /**
  * This class holds the main logic of the Javagram client. Therefore, it orchestrates any operation that the user may
  * request via the GUI so that it is completed successfully.
@@ -170,7 +171,8 @@ public class ClientFacade implements IServerNotificationsListener {
     }
 
     /**
-     * Asks the Javagram server to terminate the session that was previously initiated.
+     * Asks the Javagram server to terminate the session that was previously initiated. It also performs any needed
+     * clean up to free any resources used by the currently logged in user.
      *
      * @return true if the request has been completed successfully.
      * @throws InvalidClientSessionException  if the current client is not logged in as a Javagram user.
@@ -190,12 +192,14 @@ public class ClientFacade implements IServerNotificationsListener {
                 // The current user token and the current user's facade are only removed when the client receives the
                 // confirmation about the disconnection
                 this.userToken = null;
+
+                this.currentUserFacade.haltExecution();
                 this.currentUserFacade = null;
 
                 successful = true;
 
             } catch (RemoteException e) {
-                System.err.println("The server could not perform the requested log in operation");
+                System.err.println("The server could not perform the requested disconnection operation");
                 e.printStackTrace();
                 throw new ClientOperationFailedException("The server could not perform the requested disconnection " +
                         "operation");
@@ -397,23 +401,32 @@ public class ClientFacade implements IServerNotificationsListener {
 
         if (isSessionInitiated()) {
 
-            try {
-                // It only makes sense to send a friendship request if:
-                // - The users are not friends yet
-                // - The remote user has not sent a friendship request yet
-                // - The user has not sent a friendship request yet
-                //
-                // Therefore, due to the possible states in which a RemoteUser can be, a friendship request will only
-                // be sent if the remote user has not been retrieved previously
-                if (this.currentUserFacade.getRemoteUser(remoteUser) == null) {
-                    this.serverOperationsFacade.requestFriendship(this.userToken, remoteUser);
-                    this.currentUserFacade.updateRemoteUserStatus(remoteUser, StatusType.FRIENDSHIP_SENT);
-                }
+            // The specified RemoteUser must not be the current one
+            if(!this.currentUserFacade.getIdentifiedUser().equals(remoteUser)) {
 
-            } catch (RemoteException e) {
-                System.err.println("The server could not register the friendship request");
-                e.printStackTrace();
-                throw new ClientOperationFailedException("The server could not register the friendship request");
+                try {
+                    // It only makes sense to send a friendship request if:
+                    // - The users are not friends yet
+                    // - The remote user has not sent a friendship request yet
+                    // - The user has not sent a friendship request yet
+                    //
+                    // Therefore, due to the possible states in which a RemoteUser can be, a friendship request will only
+                    // be sent if the remote user has not been retrieved previously.
+                    if (this.currentUserFacade.getRemoteUser(remoteUser) == null) {
+                        this.serverOperationsFacade.requestFriendship(this.userToken, remoteUser);
+                        this.currentUserFacade.updateRemoteUserStatus(remoteUser, StatusType.FRIENDSHIP_SENT);
+                    }
+
+                } catch (RemoteException e) {
+                    System.err.println("The server could not register the friendship request");
+                    e.printStackTrace();
+                    throw new ClientOperationFailedException("The server could not register the friendship request");
+                }
+            }
+
+            else {
+                throw new ClientOperationFailedException("The specified user to which the request was going to be " +
+                        "sent is the client himself");
             }
 
         } else {
@@ -598,5 +611,13 @@ public class ClientFacade implements IServerNotificationsListener {
      */
     public void setRemoteUsersListener(RemoteUsersListener remoteUsersListener) {
         this.currentUserFacade.setRemoteUsersListener(remoteUsersListener);
+    }
+
+    /**
+     * Performs any tasks that are required to successfully stop the execution of the Javagram client's back-end.
+     */
+    public void haltExecution() {
+
+        this.serverOperationsFacade.haltExecution();
     }
 }

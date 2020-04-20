@@ -215,4 +215,14 @@ public class SessionDataWindowController extends AbstractController {
                     ConfigurationParameters.RMI_PORT, ConfigurationParameters.RMI_IDENTIFIER);
         }
     }
+
+    /**
+     * Performs any tasks that are required to successfully stop the execution of the desktop app.
+     */
+    public void handleClosing() {
+
+        if(this.clientFacade != null) {
+            this.clientFacade.haltExecution();
+        }
+    }
 }

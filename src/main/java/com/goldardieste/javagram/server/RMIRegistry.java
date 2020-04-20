@@ -111,8 +111,6 @@ public class RMIRegistry {
      */
     public void haltExecution() {
 
-        // TODO server needs to be able to end its execution
-
         try {
             // 1. Removing the Javagram server from the RMI registry
 
@@ -120,8 +118,7 @@ public class RMIRegistry {
             Naming.unbind("rmi://localhost:" + this.port + "/" + this.identifier);
 
             // It is also requested to end its execution
-            // ServerRemote serverRemote = (ServerRemote) this.serverRemote;
-            // serverRemote.haltExecution();
+            ((ServerFacadeProxy) this.exportedServer).haltExecution();
 
             // And it is fully unexported, so that it may not be bound again (it is needed to allow the application to
             // properly exit). The object is exported when it is initialized (UnicastRemoteObject)

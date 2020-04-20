@@ -120,4 +120,11 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
     public void endFriendship(UserToken token, String remoteUser) throws ServerOperationFailedException {
         this.maskedServer.endFriendship(token, remoteUser);
     }
+
+    /**
+     * Performs any tasks that are required to successfully stop the execution of the Javagram server.
+     */
+    public void haltExecution() {
+        this.maskedServer.haltExecution();
+    }
 }

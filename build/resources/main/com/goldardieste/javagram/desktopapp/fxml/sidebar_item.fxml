@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="entryContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onContextMenuRequested="#handleRightClick" onMouseClicked="#handleClick" prefHeight="60.0" prefWidth="320.0" styleClass="sidebarItem" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.UserEntryController">
+<HBox fx:id="entryContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onContextMenuRequested="#handleRightClick" onMouseClicked="#handleClick" prefHeight="60.0" prefWidth="320.0" styleClass="sidebarItem" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.UserEntryController">
    <children>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="250.0" styleClass="leftContainer">
          <children>

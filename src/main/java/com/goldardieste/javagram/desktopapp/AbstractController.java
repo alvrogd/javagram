@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class groups common functionality for all the desktop's app FXML controllers.
+ */
 public class AbstractController {
 
     /* ----- Attributes ----- */

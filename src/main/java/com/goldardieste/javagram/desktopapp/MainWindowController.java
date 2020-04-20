@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -27,19 +26,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-// TODO coded in a bit of a rush, so it is not definitely the best design
+// TODO coded in a bit of a rush, so the best choices have not been definitely made
+
+/**
+ * This class represents the FXML controller that orchestrates the main window of the desktop app; that is, provides
+ * most of the app's funcionality to the user.
+ */
 public class MainWindowController extends AbstractController implements LocalTunnelsListener, RemoteUsersListener {
 
     /* ----- Attributes ----- */
 
     /**
      * Provides all the back-end functionality to the desktop app.
+     * <p>
+     * It is only accessed by the JavaFX thread.
      */
     private ClientFacade clientFacade;
 
     /**
-     * Determines which status the retrieved remote users must have to be shown as entries. If it is null, no filtering
-     * is made.
+     * Determines which status the retrieved remote users must have to be shown as entries.
+     * <p>
+     * It is only accessed by the JavaFX thread.
      */
     private UserEntriesFilter userEntriesFilter;
 
@@ -58,12 +65,16 @@ public class MainWindowController extends AbstractController implements LocalTun
      * - 1: remove its highlighting when another entry gets selected.
      * - 2: highlight it again when the entries are regenerated.
      * - 3: know to whom the user is sending messages.
+     * <p>
+     * It is only accessed by the JavaFX thread.
      */
     private UserEntryController currentSelectedEntry;
 
     /**
      * If it is set to true, the user's entries will not be rendered no matter what, as their place is being taken by
      * the input where the user may send a new friendship request.
+     * <p>
+     * It is only modified by the JavaFX thread; other threads may read it.
      */
     private boolean newFriendshipInputActive;
 
@@ -76,12 +87,6 @@ public class MainWindowController extends AbstractController implements LocalTun
 
 
     /* ----- FXML attributes ----- */
-
-    /**
-     * Where the leftmost icons reside.
-     */
-    @FXML
-    private VBox sidebarMenu;
 
     /**
      * Left menu's option to deactivate the users entries' filter.
@@ -175,8 +180,9 @@ public class MainWindowController extends AbstractController implements LocalTun
     /* ----- Methods ----- */
 
     /*
-       NOTE: some methods will only be called from the JavaFX thread; therefore, race conditions are not a concern due
-             to being s single thread.
+       NOTE: some methods will only be called from the JavaFX thread, just as happens with reading/writing certain
+             variables; therefore, race conditions are not a concern due to JavaFX being a single threaded event
+             dispatcher model.
      */
 
     /**
@@ -198,13 +204,15 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         this.userEntriesFilter = UserEntriesFilter.NONE;
 
+        this.newFriendshipInputLock.lock();
+        this.newFriendshipInputActive = false;
+        this.newFriendshipInputLock.unlock();
+
         synchronized (this.retrievedRemoteUsers) {
             regenerateUserEntries();
         }
 
-        this.newFriendshipInputLock.lock();
-        this.newFriendshipInputActive = false;
-        this.newFriendshipInputLock.unlock();
+        updateMenuOptionsHighlighting(0);
     }
 
     /**
@@ -217,9 +225,15 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         this.userEntriesFilter = UserEntriesFilter.CURRENT_FRIENDS;
 
+        this.newFriendshipInputLock.lock();
+        this.newFriendshipInputActive = false;
+        this.newFriendshipInputLock.unlock();
+
         synchronized (this.retrievedRemoteUsers) {
             regenerateUserEntries();
         }
+
+        updateMenuOptionsHighlighting(1);
     }
 
     /**
@@ -232,9 +246,15 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         this.userEntriesFilter = UserEntriesFilter.REQUESTS;
 
+        this.newFriendshipInputLock.lock();
+        this.newFriendshipInputActive = false;
+        this.newFriendshipInputLock.unlock();
+
         synchronized (this.retrievedRemoteUsers) {
             regenerateUserEntries();
         }
+
+        updateMenuOptionsHighlighting(2);
     }
 
     /**
@@ -244,12 +264,7 @@ public class MainWindowController extends AbstractController implements LocalTun
      */
     @FXML
     public void logout(Event e) {
-        try {
-            this.clientFacade.disconnect();
-            handleClosing();
-        } catch (ClientOperationFailedException exception) {
-            exception.printStackTrace();
-        }
+        handleClosing();
     }
 
     /**
@@ -286,6 +301,8 @@ public class MainWindowController extends AbstractController implements LocalTun
         } finally {
             this.newFriendshipInputLock.unlock();
         }
+
+        updateMenuOptionsHighlighting(3);
     }
 
     /**
@@ -306,8 +323,8 @@ public class MainWindowController extends AbstractController implements LocalTun
             // If the request is successfully sent, the user entries are shown again
             this.newFriendshipInputActive = false;
             successful = true;
-            System.out.println("Sent to: " + remoteUser);
 
+            // TODO show warning when failed
         } catch (ClientOperationFailedException exception) {
             exception.printStackTrace();
 
@@ -316,8 +333,80 @@ public class MainWindowController extends AbstractController implements LocalTun
         }
 
         // So that the user sees instantly that the request has been sent
-        if(successful) {
+        if (successful) {
             activateFilterRequests(null);
+        }
+    }
+
+    /**
+     * Removes the highlighting from all the left menu's options, except from the one that is specified through its
+     * index. The entry at the top has an index of 0, and the one at the bottom has han index of 3 (logout option is
+     * not considered).
+     *
+     * @param indexHighlight index of the menu option that is going to be highlighted.
+     */
+    private void updateMenuOptionsHighlighting(int indexHighlight) {
+
+        ObservableList<String> styles;
+
+        // 0 -> no filter
+        styles = this.menuOptionAllUsers.getStyleClass();
+
+        if (indexHighlight == 0) {
+            if (!styles.contains("sidebarMenuItemSelected")) {
+                styles.add("sidebarMenuItemSelected");
+            }
+            if (!styles.contains("sidebarMenuItemNoFilterSelected")) {
+                styles.add("sidebarMenuItemNoFilterSelected");
+            }
+        } else {
+            styles.remove("sidebarMenuItemSelected");
+            styles.remove("sidebarMenuItemNoFilterSelected");
+        }
+
+        // 1 -> all friends
+        styles = this.menuOptionFriends.getStyleClass();
+
+        if (indexHighlight == 1) {
+            if (!styles.contains("sidebarMenuItemSelected")) {
+                styles.add("sidebarMenuItemSelected");
+            }
+            if (!styles.contains("sidebarMenuItemCurrentFriendsSelected")) {
+                styles.add("sidebarMenuItemCurrentFriendsSelected");
+            }
+        } else {
+            styles.remove("sidebarMenuItemSelected");
+            styles.remove("sidebarMenuItemCurrentFriendsSelected");
+        }
+
+        // 2 -> requests
+        styles = this.menuOptionRequests.getStyleClass();
+
+        if (indexHighlight == 2) {
+            if (!styles.contains("sidebarMenuItemSelected")) {
+                styles.add("sidebarMenuItemSelected");
+            }
+            if (!styles.contains("sidebarMenuItemRequestsSelected")) {
+                styles.add("sidebarMenuItemRequestsSelected");
+            }
+        } else {
+            styles.remove("sidebarMenuItemSelected");
+            styles.remove("sidebarMenuItemRequestsSelected");
+        }
+
+        // 3 -> send new request
+        styles = this.menuOptionNewFriend.getStyleClass();
+
+        if (indexHighlight == 3) {
+            if (!styles.contains("sidebarMenuItemSelected")) {
+                styles.add("sidebarMenuItemSelected");
+            }
+            if (!styles.contains("sidebarMenuItemNewFriendSelected")) {
+                styles.add("sidebarMenuItemNewFriendSelected");
+            }
+        } else {
+            styles.remove("sidebarMenuItemSelected");
+            styles.remove("sidebarMenuItemNewFriendSelected");
         }
     }
 
@@ -325,7 +414,14 @@ public class MainWindowController extends AbstractController implements LocalTun
      * Performs any tasks that are required to successfully stop the execution of the desktop app.
      */
     public void handleClosing() {
-        // TODO implement method
+
+        // TODO implement method -> logout for example
+        try {
+            this.clientFacade.disconnect();
+        } catch (ClientOperationFailedException exception) {
+            exception.printStackTrace();
+        }
+
         System.exit(0);
     }
 
@@ -342,7 +438,8 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         synchronized (this.retrievedRemoteUsers) {
 
-            // When the user clicks on an user entry of a current online friend, a communication with him is established
+            // When the user clicks on an user entry of a current online friend, a communication with him is
+            // established
             boolean isOnline = this.retrievedRemoteUsers.get(remoteUser).getStatus().equals(StatusType.ONLINE);
 
             if (isOnline) {
@@ -351,13 +448,12 @@ public class MainWindowController extends AbstractController implements LocalTun
                         this.clientFacade.initiateChat(remoteUser);
                     }
 
-
                 } catch (ClientOperationFailedException exception) {
                     exception.printStackTrace();
                 }
             }
 
-            // The chat history is redrawn event if the selected user is not online, to show the "no messages" warning
+            // The chat history is redrawn even if the selected user is not online, to show the "no messages" warning
             synchronized (this.initiatedChats) {
                 regenerateChatHistory(this.initiatedChats.get(userEntryController.getUsername()));
             }
@@ -491,6 +587,7 @@ public class MainWindowController extends AbstractController implements LocalTun
                     }
 
                 } else {
+                    // TODO show warning when user is no longer online
                     System.err.println("No current user has been selected to send the message");
                 }
             }
@@ -695,8 +792,8 @@ public class MainWindowController extends AbstractController implements LocalTun
                                 // The user's entry is appended to the currently shown ones
                                 entries.add(loader.load());
 
-                                // And its contents are set to the received data
                                 UserEntryController controller = loader.getController();
+
                                 controller.updateContents(remoteUser.getUsername(), remoteUser.getUsername(),
                                         remoteUser.getStatus().toString());
                                 controller.setMainWindowController(this);

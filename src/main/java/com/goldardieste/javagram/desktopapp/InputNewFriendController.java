@@ -4,6 +4,9 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
+/**
+ * This class represents the FXML controller for the input region to send a new friendship request.
+ */
 public class InputNewFriendController {
 
     /* ----- Attributes ----- */

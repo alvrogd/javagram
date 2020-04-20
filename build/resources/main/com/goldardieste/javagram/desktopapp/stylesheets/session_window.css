@@ -18,6 +18,12 @@
     -fx-cursor: hand;
 }
 
+.arrowBack {
+    -fx-graphic: url(../icons/arrow_back_icon.png);
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
 .sessionDataInput {
     -fx-background-color: transparent;
     -fx-text-fill: #FFFFFF;

@@ -1,3 +1,5 @@
+/* TODO segment into multiple files */
+
 .rootContainer {
     -fx-background-color: #17212B;
 }
@@ -6,7 +8,11 @@
 /* ----- Sidebar menu == left-most buttons ----- */
 .sidebarMenuContainer {
     -fx-background-color: #0E1621;
+}
+
+.sidebarMenuItem .label {
     -fx-text-fill: #768c9e;
+    -fx-font-size: 12px;
 }
 
 .sidebarMenuItem .button {
@@ -21,8 +27,40 @@
     -fx-text-fill: #5EB5F7;
 }
 
+.sidebarMenuItemNoFilter .button {
+    -fx-graphic: url(../icons/global_icon.png);
+}
+
+.sidebarMenuItemNoFilterSelected .button {
+    -fx-graphic: url(../icons/global_icon_selected.png);
+}
+
+.sidebarMenuItemCurrentFriends .button {
+    -fx-graphic: url(../icons/friends_icon.png);
+}
+
+.sidebarMenuItemCurrentFriendsSelected .button {
+    -fx-graphic: url(../icons/friends_icon_selected.png);
+}
+
+.sidebarMenuItemRequests .button {
+    -fx-graphic: url(../icons/request_icon.png);
+}
+
+.sidebarMenuItemRequestsSelected .button {
+    -fx-graphic: url(../icons/request_icon_selected.png);
+}
+
+.sidebarMenuItemNewFriend .button {
+    -fx-graphic: url(../icons/new_friend_icon.png);
+}
+
+.sidebarMenuItemNewFriendSelected .button {
+    -fx-graphic: url(../icons/new_friend_icon_selected.png);
+}
+
 .sidebarMenuItemLogout .button {
-    -fx-graphic: url(../icons/test_icon.png);
+    -fx-graphic: url(../icons/logout_icon.png);
 }
 
 .sidebarMenuItemSelected {
@@ -30,7 +68,6 @@
 }
 
 .sidebarMenuItemSelected .label {
-    -fx-font-size: 12px;
     -fx-text-fill: #5EB5F7;
 }
 
@@ -88,6 +125,7 @@
 .menu-item:focused {
     -fx-background-color: #202b36;
 }
+
 /* ----- END ----- */
 
 
@@ -168,7 +206,7 @@
 }
 
 #inputMessage .scroll-pane > .viewport, #inputMessage > .viewport,
-.defaultInput .scroll-pane > .viewport, .defaultInput > .viewport{
+.defaultInput .scroll-pane > .viewport, .defaultInput > .viewport {
     -fx-background-color: transparent;
 }
 
@@ -223,7 +261,7 @@
 
 /* ----- Common properties ----- */
 
-/* All scrollpanes are made transparent */
+/* All scroll-panes are made transparent */
 .scroll-pane, .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }

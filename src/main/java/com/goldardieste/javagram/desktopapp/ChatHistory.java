@@ -31,16 +31,6 @@ public class ChatHistory {
     public ChatHistory() {
         this.messages = new ArrayList<>();
         this.outgoing = new ArrayList<>();
-
-        // TODO remove
-        this.messages.add("Hola que tal");
-        this.outgoing.add(true);
-
-        this.messages.add("Bien, y tu?");
-        this.outgoing.add(false);
-
-        this.messages.add("Genial");
-        this.outgoing.add(true);
     }
 
 

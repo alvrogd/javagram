@@ -28,12 +28,6 @@ public class UserEntryController {
      */
     private MainWindowController mainWindowController;
 
-    /**
-     * If it is not null, represents a {@link ContextMenu} that {@link MainWindowController} generated when the user
-     * performed a right click over the entry.
-     */
-    private ContextMenu contextMenu;
-
 
     /* ----- FXML attributes ----- */
 
@@ -116,8 +110,6 @@ public class UserEntryController {
     @FXML
     public void handleClick(Event e) {
 
-        System.out.println("Click on: " + this.username);
-
         if (this.mainWindowController != null) {
             this.mainWindowController.handleEntryClick(this);
         }
@@ -150,8 +142,6 @@ public class UserEntryController {
     @FXML
     public void handleRightClick(ContextMenuEvent e) {
 
-        System.out.println("Right click on: " + this.username);
-
         if (this.mainWindowController != null) {
             this.mainWindowController.handleEntryRightClick(this, e);
         }
@@ -165,7 +155,6 @@ public class UserEntryController {
      */
     public void showContextMenu(ContextMenu contextMenu, ContextMenuEvent e) {
 
-        this.contextMenu = contextMenu;
         contextMenu.show(this.entryContainer.getScene().getWindow(), e.getScreenX(), e.getScreenY());
     }
 }

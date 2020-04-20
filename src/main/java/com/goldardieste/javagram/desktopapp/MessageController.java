@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 /**
- * This class is needed to generate a message, be it outgoing or incoming.
+ * This class is needed to generate the visual representation of a message, be it outgoing or incoming.
  */
 public class MessageController {
 
@@ -45,19 +45,19 @@ public class MessageController {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        int remaningCols = 45;
+        int remainingCols = 45;
 
         // Words get appended once at a time
         for (String word : text.split(" ")) {
 
-            if (remaningCols - word.length() <= 0) {
+            if (remainingCols - word.length() <= 0) {
 
                 stringBuilder.append('\n');
-                remaningCols = 45;
+                remainingCols = 45;
             }
 
             stringBuilder.append(word).append(' ');
-            remaningCols -= word.length() + 1;
+            remainingCols -= word.length() + 1;
         }
 
         return stringBuilder.toString();

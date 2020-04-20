@@ -11,6 +11,10 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+/**
+ * This class represents the FXML controller for the window where the user types in an username and password to log in
+ * or to sign up.
+ */
 public class SessionDataWindowController extends AbstractController {
 
     /* ----- Attributes ----- */
@@ -54,6 +58,17 @@ public class SessionDataWindowController extends AbstractController {
 
 
     /* ----- Methods ----- */
+
+    /**
+     * Switches back to the window where the user chooses to sign up or to log in.
+     *
+     * @param e associated {@link Event}.
+     * @throws IOException if the session mode window's FXML file cannot be loaded.
+     */
+    @FXML
+    public void goSessionModeWindow(Event e) throws IOException {
+        loadNewScene("session_mode_window");
+    }
 
     /**
      * Checks the currently typed username so that it warns the user if it is empty or exceeds the maximum length.
@@ -173,7 +188,7 @@ public class SessionDataWindowController extends AbstractController {
      */
     private void prepareClientBackEnd() {
 
-        if(this.clientFacade == null) {
+        if (this.clientFacade == null) {
             this.clientFacade = new ClientFacade(ConfigurationParameters.RMI_ADDRESS,
                     ConfigurationParameters.RMI_PORT, ConfigurationParameters.RMI_IDENTIFIER);
         }

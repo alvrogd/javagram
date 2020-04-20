@@ -5,6 +5,10 @@ import javafx.fxml.FXML;
 
 import java.io.IOException;
 
+/**
+ * This class represents the FXML controller for the window where the user chooses if he wants to sign up for a new
+ * Javagram account, or to log in into an existing one.
+ */
 public class SessionModeWindowController extends AbstractController {
 
     /* ----- Methods ----- */

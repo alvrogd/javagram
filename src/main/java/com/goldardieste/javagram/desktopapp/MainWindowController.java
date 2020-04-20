@@ -25,7 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 // TODO coded in a bit of a rush, so the best choices have not been definitely made
 // TODO message input should grow to comfortably type long messages
-
+// TODO multi-line messages break the messages' boxes (they do not grow in height accordingly)
 /**
  * This class represents the FXML controller that orchestrates the main window of the desktop app; that is, provides
  * most of the app's funcionality to the user.

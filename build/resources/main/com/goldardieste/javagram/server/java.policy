@@ -1,0 +1,27 @@
+grant {
+    // Permits socket access to:
+    //   - The default RMI registry port (1099) in the local machine, to initialize the RMI registry
+    //   - Any other non-root local port that may be needed for the RMI background services
+    //   - The 5432 port to connect to PostgreSQL
+    //   - Any non-root remote port to communicate with the clients
+    permission java.net.SocketPermission "*:1024-65535", "connect,accept,resolve";
+
+    // For Hikari
+    permission java.util.PropertyPermission "hikaricp.configurationFile", "read";
+    permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+    permission java.util.PropertyPermission "postgresql.url.encoding", "read";
+    permission java.util.PropertyPermission "com.zaxxer.hikari.aliveBypassWindowMs", "read";
+    permission java.util.PropertyPermission "com.zaxxer.hikari.housekeeping.periodMs", "read";
+    permission java.lang.RuntimePermission "setContextClassLoader";
+    permission java.util.PropertyPermission "com.zaxxer.hikari.blockUntilFilled", "read";
+
+    // For PostgreSQL
+    permission java.util.PropertyPermission "socksProxyHost", "read";
+    permission java.sql.SQLPermission "setNetworkTimeout";
+    permission java.util.PropertyPermission "org.postgresql.forceBinary", "read";
+
+    // Common
+    permission java.lang.RuntimePermission "modifyThread";
+    permission java.lang.RuntimePermission "getClassLoader";
+    permission java.util.PropertyPermission "com.fasterxml.jackson.core.util.BufferRecyclers.trackReusableBuffers", "read";
+};

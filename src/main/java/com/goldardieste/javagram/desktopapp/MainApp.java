@@ -32,6 +32,13 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
+
+        // Security manager
+        System.setProperty("java.security.debug", "access,failure,policy");
+        System.setProperty("java.security.policy", "file:./build/resources/main/com/goldardieste/javagram/client/java.policy");
+        System.setSecurityManager(new SecurityManager());
+
+        // Desktop app
         launch(args);
     }
 }

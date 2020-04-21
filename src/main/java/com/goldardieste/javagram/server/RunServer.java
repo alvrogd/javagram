@@ -9,6 +9,10 @@ public class RunServer {
 
     public static void main(String[] args) throws IOException {
 
+        // Security manager
+        System.setProperty("java.security.policy", "file:./build/resources/main/com/goldardieste/javagram/server/java.policy");
+        System.setSecurityManager(new SecurityManager());
+
         // Javagram Server
         ServerFacade server = new ServerFacade(ConfigurationParameters.JDBC_DRIVER, ConfigurationParameters.JDBC_URL,
                 ConfigurationParameters.JDBC_PORT, ConfigurationParameters.JDBC_DATABASE,

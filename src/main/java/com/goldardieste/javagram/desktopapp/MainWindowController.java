@@ -14,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -613,6 +615,28 @@ public class MainWindowController extends AbstractController implements LocalTun
                         exception.printStackTrace();
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Checks if the user has pressed the return key while typing a message. In such case, the app tries to send the
+     * currently typed in message, if any.
+     *
+     * @param e associated {@link KeyEvent}.
+     */
+    @FXML
+    public void checkSendingViaReturnKey(KeyEvent e) {
+
+        if (e.getCode().equals(KeyCode.ENTER)) {
+
+            // If CTRL is not pressed
+            if (!e.isControlDown()) {
+                // A send operation is attempted
+                sendMessage(null);
+            } else {
+                // Otherwise, a carriage return is appended to the text field
+                this.textAreaMessage.appendText(System.getProperty("line.separator"));
             }
         }
     }

@@ -143,7 +143,7 @@
       </VBox>
       <VBox layoutX="420.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720.0" prefWidth="860.0" styleClass="chatContainer">
          <children>
-            <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="688.0" prefWidth="860.0">
+            <ScrollPane fx:id="messagesScrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="688.0" prefWidth="860.0">
               <content>
                 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="688.0" prefWidth="846.0">
                      <children>

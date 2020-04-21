@@ -2,6 +2,7 @@ package com.goldardieste.javagram.common;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.security.PublicKey;
 import java.util.List;
 
 /**
@@ -71,16 +72,17 @@ public interface IServer extends Remote {
      * The server asks the remote user, in behalf of the client that requests the operation, to initialize a connection
      * through which they may communicate.
      *
-     * @param token       identifies the user on whose behalf the operation will be performed.
-     * @param localTunnel {@link IRemoteUserTunnel} that the client has opened so that the remote user may send him
-     *                    messages.
-     * @param remoteUser  name by which the remote user that will be asked can be identified.
+     * @param token          identifies the user on whose behalf the operation will be performed.
+     * @param localTunnel    {@link IRemoteUserTunnel} that the client has opened so that the remote user may send him
+     *                       messages.
+     * @param localPublicKey the RSA public key of the client.
+     * @param remoteUser     name by which the remote user that will be asked can be identified.
      * @return if the remote user accepts the request, a {@link IRemoteUserTunnel} through which the client may send
      * him messages is returned.
      * @throws RemoteException irrecoverable error during a remote procedure call.
      */
-    IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) throws
-            RemoteException;
+    NewChatData initiateChat(UserToken token, IRemoteUserTunnel localTunnel, PublicKey localPublicKey, String
+            remoteUser) throws RemoteException;
 
     /**
      * A friendship request is sent to the remote user on behalf of the client, as long as it did not already exist. If

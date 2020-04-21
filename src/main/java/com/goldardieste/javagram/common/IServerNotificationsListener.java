@@ -2,6 +2,7 @@ package com.goldardieste.javagram.common;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.security.PublicKey;
 
 /**
  * This interface contains all the operations that a Javagram client must support. All of these operations are supposed
@@ -15,15 +16,16 @@ public interface IServerNotificationsListener extends Remote {
      * The corresponding client is asked to initialize a connection with a remote user, through which the may
      * communicate.
      *
-     * @param remoteUser       name by which the remote user that asks to establish the connection can be identified.
-     * @param remoteUserTunnel {@link IRemoteUserTunnel} that the remote user has opened so that the client may
-     *                         communicate with him.
-     * @return if the client has accepted the request, a {@link IRemoteUserTunnel} through which the remote user may
-     * send him messages is returned.
+     * @param remoteUser          name by which the remote user that asks to establish the connection can be identified.
+     * @param remoteUserTunnel    {@link IRemoteUserTunnel} that the remote user has opened so that the client may
+     *                            communicate with him.
+     * @param remoteUserPublicKey the RSA public key of the remote user.
+     * @return all the data that the remote user needs to communicate with the client.
      * @throws RemoteException irrecoverable error during a remote procedure call, or the chat request has been
      *                         rejected.
      */
-    IRemoteUserTunnel replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel) throws RemoteException;
+    NewChatData replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel, PublicKey
+            remoteUserPublicKey) throws RemoteException;
 
     /**
      * 1. If the status of the specified remote user has been already retrieved by the client, it is substituted by the

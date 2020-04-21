@@ -1,5 +1,6 @@
 package com.goldardieste.javagram.client;
 
+import com.goldardieste.javagram.client.cryptography.CommunicationDecryptionUtility;
 import com.goldardieste.javagram.common.IRemoteUserTunnel;
 
 import java.rmi.RemoteException;
@@ -22,6 +23,11 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
      * If it is not null, all {@link LocalUserTunnel} will forward to it all incoming data.
      */
     private static LocalTunnelsListener localTunnelsListener;
+
+    /**
+     * All {@link LocalUserTunnel} will use it to decrypt all incoming data.
+     */
+    private static CommunicationDecryptionUtility communicationDecryptionUtility;
 
 
     /* ----- Constructor ----- */
@@ -46,11 +52,14 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
     @Override
     public void transmitMessage(String message) {
 
-        if(LocalUserTunnel.localTunnelsListener != null) {
-            LocalUserTunnel.localTunnelsListener.forwardIncomingMessage(this.remoteUser, message);
+        String decryptedMessage = LocalUserTunnel.communicationDecryptionUtility.decryptString(this.remoteUser,
+                message);
+
+        if (LocalUserTunnel.localTunnelsListener != null) {
+            LocalUserTunnel.localTunnelsListener.forwardIncomingMessage(this.remoteUser, decryptedMessage);
         }
 
-        System.out.println("The user '" + this.remoteUser + "' has sent the following message: " + message);
+        System.out.println("The user '" + this.remoteUser + "' has sent the following message: " + decryptedMessage);
     }
 
     /**
@@ -60,5 +69,14 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
      */
     public static void setLocalTunnelsListener(LocalTunnelsListener localTunnelsListener) {
         LocalUserTunnel.localTunnelsListener = localTunnelsListener;
+    }
+
+    /**
+     * Updates the value of {@link #communicationDecryptionUtility}.
+     *
+     * @param utility new {@link #communicationDecryptionUtility}.
+     */
+    public static void setCommunicationDecryptionUtility(CommunicationDecryptionUtility utility) {
+        LocalUserTunnel.communicationDecryptionUtility = utility;
     }
 }

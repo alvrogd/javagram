@@ -3,6 +3,7 @@ package com.goldardieste.javagram.server;
 import com.goldardieste.javagram.common.*;
 
 import java.rmi.RemoteException;
+import java.security.PublicKey;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -218,9 +219,7 @@ public class ServerFacade implements IServer {
             System.err.println("Could not notify a given user's friends about him going offline");
             e.printStackTrace();
             throw new ServerOperationFailedException("Could not close the specified session");
-        }
-
-        finally {
+        } finally {
             // If the previous steps have been completed successfully, the operations will seem successful to the
             // client even if the connection cannot be closed
             closeDaoConnection(connection);
@@ -300,13 +299,14 @@ public class ServerFacade implements IServer {
 
     /**
      * {@inheritDoc}
+     * @return
      */
     @Override
-    public IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) throws
-            ServerOperationFailedException {
+    public NewChatData initiateChat(UserToken token, IRemoteUserTunnel localTunnel, PublicKey localPublicKey,
+                                    String remoteUser) throws ServerOperationFailedException {
 
         Connection connection = null;
-        IRemoteUserTunnel result = null;
+        NewChatData result = null;
 
         try {
             String username = this.currentSessionsManager.getUserFromSession(token);
@@ -321,7 +321,7 @@ public class ServerFacade implements IServer {
                 IServerNotificationsListener listener = this.serverNotificationsListeners.get(remoteUser);
 
                 if (listener != null) {
-                    result = listener.replyChatRequest(username, localTunnel);
+                    result = listener.replyChatRequest(username, localTunnel, localPublicKey);
                 } else {
                     throw new ServerOperationFailedException("The specified remote user is not currently available");
                 }

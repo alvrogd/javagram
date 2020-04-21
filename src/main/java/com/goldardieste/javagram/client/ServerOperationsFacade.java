@@ -8,6 +8,7 @@ import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.PublicKey;
 import java.util.List;
 
 /**
@@ -151,13 +152,13 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
     }
 
     /**
-     * Calls {@link IServer#initiateChat(UserToken, IRemoteUserTunnel, String)}.
+     * Calls {@link IServer#initiateChat(UserToken, IRemoteUserTunnel, PublicKey, String)}.
      *
      * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
      */
-    public IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) throws
-            RemoteException {
-        return this.javagramServer.initiateChat(token, localTunnel, remoteUser);
+    public NewChatData initiateChat(UserToken token, IRemoteUserTunnel localTunnel, PublicKey localPublicKey,
+                                    String remoteUser) throws RemoteException {
+        return this.javagramServer.initiateChat(token, localTunnel, localPublicKey, remoteUser);
     }
 
     /**
@@ -198,11 +199,12 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
 
     /**
      * {@inheritDoc}
+     * @return
      */
     @Override
-    public IRemoteUserTunnel replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel) throws
-            RemoteException {
-        return this.clientFacade.replyChatRequest(remoteUser, remoteUserTunnel);
+    public NewChatData replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel, PublicKey
+            remoteUserPublicKey) throws RemoteException {
+        return this.clientFacade.replyChatRequest(remoteUser, remoteUserTunnel, remoteUserPublicKey);
     }
 
     /**

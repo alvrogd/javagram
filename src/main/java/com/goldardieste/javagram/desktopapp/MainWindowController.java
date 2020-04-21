@@ -26,6 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
 // TODO coded in a bit of a rush, so the best choices have not been definitely made
 // TODO message input should grow to comfortably type long messages
 // TODO multi-line messages break the messages' boxes (they do not grow in height accordingly)
+
 /**
  * This class represents the FXML controller that orchestrates the main window of the desktop app; that is, provides
  * most of the app's funcionality to the user.
@@ -127,6 +128,12 @@ public class MainWindowController extends AbstractController implements LocalTun
      */
     @FXML
     private Button btnSend;
+
+    /**
+     * Contains {@link #messagesContainer}.
+     */
+    @FXML
+    private ScrollPane messagesScrollPane;
 
     /**
      * Where all messages for a certain chat are contained.
@@ -800,6 +807,9 @@ public class MainWindowController extends AbstractController implements LocalTun
 
                     entries.clear();
 
+                    // If the previously selected entry has been found again or not
+                    boolean previousEntryFound = false;
+
                     for (RemoteUser remoteUser : this.retrievedRemoteUsers.values()) {
 
                         if (this.userEntriesFilter.isStatusTypeAllowed(remoteUser.getStatus())) {
@@ -821,12 +831,14 @@ public class MainWindowController extends AbstractController implements LocalTun
                                 if (this.currentSelectedEntry != null &&
                                         this.currentSelectedEntry.getUsername().equals(controller.getUsername())) {
 
+                                    previousEntryFound = true;
+
                                     this.currentSelectedEntry = controller;
                                     this.currentSelectedEntry.addHighlighting();
 
                                     // And, if the user is now online, it could be that he was previously a pending
                                     // friend, so the communication with him must be established
-                                    if(this.retrievedRemoteUsers.get(this.currentSelectedEntry.getUsername())
+                                    if (this.retrievedRemoteUsers.get(this.currentSelectedEntry.getUsername())
                                             .getStatus().equals(StatusType.ONLINE)) {
                                         initiateAndShowChat(this.currentSelectedEntry.getUsername());
                                     }
@@ -837,6 +849,18 @@ public class MainWindowController extends AbstractController implements LocalTun
                             }
                         }
                     }
+
+                    // If the previously selected entry has not been found, the currently selected one is set to null
+                    if (!previousEntryFound) {
+                        this.currentSelectedEntry = null;
+                    }
+
+                    // The scroll of the container of all messages is set to the maximum, so that the new message is
+                    // shown
+                    // https://stackoverflow.com/questions/26152642/get-the-height-of-a-node-in-javafx-generate-a-layout-pass
+                    this.messagesScrollPane.applyCss();
+                    this.messagesScrollPane.layout();
+                    this.messagesScrollPane.setVvalue(1.0);
                 }
             } finally {
                 this.newFriendshipInputLock.unlock();

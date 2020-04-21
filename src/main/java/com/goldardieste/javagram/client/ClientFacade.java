@@ -1,8 +1,10 @@
 package com.goldardieste.javagram.client;
 
+import com.goldardieste.javagram.client.cryptography.CryptographicServices;
 import com.goldardieste.javagram.common.*;
 
 import java.rmi.RemoteException;
+import java.security.PublicKey;
 import java.util.concurrent.locks.ReentrantLock;
 
 // TODO catch and throw exception when the server is not reachable
@@ -37,6 +39,11 @@ public class ClientFacade implements IServerNotificationsListener {
      * {@link ReentrantLock} that a thread must acquire to check/modify the value of {@link #userToken}.
      */
     private final ReentrantLock userTokenLock;
+
+    /**
+     * {@link CryptographicServices} used to encrypt/decrypt communications with other Javagram users.
+     */
+    private CryptographicServices cryptographicServices;
 
 
     /* ----- Constructor ----- */
@@ -112,6 +119,8 @@ public class ClientFacade implements IServerNotificationsListener {
             try {
                 this.userToken = this.serverOperationsFacade.signUp(username, password);
                 this.currentUserFacade = new CurrentUserFacade(username);
+                this.cryptographicServices = new CryptographicServices();
+                CurrentUserFacade.setCommunicationDecryptionUtility(this.cryptographicServices);
 
             } catch (RemoteException e) {
                 System.err.println("The server could not perform the requested sign up operation");
@@ -150,6 +159,8 @@ public class ClientFacade implements IServerNotificationsListener {
             try {
                 this.userToken = this.serverOperationsFacade.login(username, password);
                 this.currentUserFacade = new CurrentUserFacade(username);
+                this.cryptographicServices = new CryptographicServices();
+                CurrentUserFacade.setCommunicationDecryptionUtility(this.cryptographicServices);
 
             } catch (RemoteException e) {
                 System.err.println("The server could not perform the requested log in operation");
@@ -296,8 +307,12 @@ public class ClientFacade implements IServerNotificationsListener {
                     try {
                         IRemoteUserTunnel localTunnel = this.currentUserFacade.prepareTunnel(remoteUser);
 
-                        this.currentUserFacade.storeTunnel(remoteUser,
-                                this.serverOperationsFacade.initiateChat(this.userToken, localTunnel, remoteUser));
+                        NewChatData chatData = this.serverOperationsFacade.initiateChat(this.userToken,
+                                localTunnel, this.cryptographicServices.getPublicKey(), remoteUser);
+
+                        this.currentUserFacade.storeTunnel(remoteUser, chatData.remoteUserTunnel);
+                        this.cryptographicServices.storeSecretForCommunication(remoteUser,
+                                chatData.encryptedCommunicationSecret);
 
                         successful = true;
 
@@ -369,7 +384,8 @@ public class ClientFacade implements IServerNotificationsListener {
             if (isChatInitiated(remoteUser)) {
 
                 try {
-                    this.currentUserFacade.sendMessage(remoteUser, message);
+                    this.currentUserFacade.sendMessage(remoteUser, this.cryptographicServices.encryptString(remoteUser,
+                            message));
 
                 } catch (TunnelOperationException e) {
                     System.err.println("Could not send the given message to the specified user");
@@ -402,7 +418,7 @@ public class ClientFacade implements IServerNotificationsListener {
         if (isSessionInitiated()) {
 
             // The specified RemoteUser must not be the current one
-            if(!this.currentUserFacade.getIdentifiedUser().equals(remoteUser)) {
+            if (!this.currentUserFacade.getIdentifiedUser().equals(remoteUser)) {
 
                 try {
                     // It only makes sense to send a friendship request if:
@@ -422,9 +438,7 @@ public class ClientFacade implements IServerNotificationsListener {
                     e.printStackTrace();
                     throw new ClientOperationFailedException("The server could not register the friendship request");
                 }
-            }
-
-            else {
+            } else {
                 throw new ClientOperationFailedException("The specified user to which the request was going to be " +
                         "sent is the client himself");
             }
@@ -546,17 +560,21 @@ public class ClientFacade implements IServerNotificationsListener {
 
     /**
      * {@inheritDoc}
+     * @return
      */
     @Override
-    public IRemoteUserTunnel replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel) throws
-            ClientListeningOperationFailedException {
+    public NewChatData replyChatRequest(String remoteUser, IRemoteUserTunnel remoteUserTunnel, PublicKey
+            remoteUserPublicKey) throws ClientListeningOperationFailedException {
 
-        IRemoteUserTunnel result = null;
+        NewChatData result = null;
 
         // No checks are made to determine if the user session is valid, as the Javagram server will only execute
         // remote methods in the client when it is logged in
         try {
-            result = this.currentUserFacade.replyChatRequest(remoteUser, remoteUserTunnel);
+            IRemoteUserTunnel localTunnel = this.currentUserFacade.replyChatRequest(remoteUser, remoteUserTunnel);
+            String secret = this.cryptographicServices.generateSecretForCommunication(remoteUser, remoteUserPublicKey);
+
+            result = new NewChatData(localTunnel, secret);
 
         } catch (TunnelOperationException e) {
             System.err.println("Could not set up a connection for a remote user that wants to communicate with" +

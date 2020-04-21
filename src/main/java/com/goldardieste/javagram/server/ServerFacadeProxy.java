@@ -4,6 +4,7 @@ import com.goldardieste.javagram.common.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.PublicKey;
 import java.util.List;
 
 /**
@@ -82,11 +83,12 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
 
     /**
      * {@inheritDoc}
+     * @return
      */
     @Override
-    public IRemoteUserTunnel initiateChat(UserToken token, IRemoteUserTunnel localTunnel, String remoteUser) throws
-            ServerOperationFailedException {
-        return this.maskedServer.initiateChat(token, localTunnel, remoteUser);
+    public NewChatData initiateChat(UserToken token, IRemoteUserTunnel localTunnel, PublicKey localPublicKey,
+                                    String remoteUser) throws ServerOperationFailedException {
+        return this.maskedServer.initiateChat(token, localTunnel, localPublicKey, remoteUser);
     }
 
     /**

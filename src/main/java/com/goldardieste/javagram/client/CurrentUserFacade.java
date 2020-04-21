@@ -1,5 +1,6 @@
 package com.goldardieste.javagram.client;
 
+import com.goldardieste.javagram.client.cryptography.CommunicationDecryptionUtility;
 import com.goldardieste.javagram.common.IRemoteUserTunnel;
 import com.goldardieste.javagram.common.RemoteUser;
 import com.goldardieste.javagram.common.StatusType;
@@ -586,6 +587,16 @@ public class CurrentUserFacade {
      */
     public static void setLocalTunnelsListener(LocalTunnelsListener localTunnelsListener) {
         LocalUserTunnel.setLocalTunnelsListener(localTunnelsListener);
+    }
+
+    /**
+     * Updates the {@link CommunicationDecryptionUtility} that all {@link LocalUserTunnel} will use when receiving
+     * data.
+     *
+     * @param utility the new {@link CommunicationDecryptionUtility}.
+     */
+    public static void setCommunicationDecryptionUtility(CommunicationDecryptionUtility utility) {
+        LocalUserTunnel.setCommunicationDecryptionUtility(utility);
     }
 
     /**

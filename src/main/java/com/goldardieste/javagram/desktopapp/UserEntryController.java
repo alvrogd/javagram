@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-
-import javax.naming.Context;
 
 /**
  * This class is needed to generate custom user entries that are shown in the main window's sidebar.

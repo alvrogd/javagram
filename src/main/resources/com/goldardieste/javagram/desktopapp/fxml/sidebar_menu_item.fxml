@@ -17,7 +17,7 @@
             </HBox>
             <HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="80.0">
                <children>
-                  <Label text="Categoría" />
+                  <Label text="Category" />
                </children>
             </HBox>
          </children>

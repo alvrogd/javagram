@@ -4,7 +4,7 @@ STEPS:
 2. Import the server's certificate into the client's truststore.
 3. Generate keys and certificate for the client.
 4. Import the client's certificate into the server's truststore -> callbacks.
-5. Import the client's certificate intp the client's truststore -> direct communication between clients.
+5. Import the client's certificate into the client's truststore -> direct communication between clients.
 
 
 

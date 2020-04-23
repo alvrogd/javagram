@@ -2,7 +2,6 @@ package com.goldardieste.javagram.desktopapp;
 
 import com.goldardieste.javagram.common.RemoteUser;
 import com.goldardieste.javagram.common.StatusType;
-import com.goldardieste.javagram.server.StatusTypeUserDAO;
 
 /**
  * This class contains all the possible filters that determine which {@link RemoteUser}s can be rendered as user

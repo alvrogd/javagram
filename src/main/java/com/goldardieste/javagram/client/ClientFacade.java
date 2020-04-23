@@ -182,6 +182,41 @@ public class ClientFacade implements IServerNotificationsListener {
     }
 
     /**
+     * Asks the Javagram server to update the password of the current user.
+     *
+     * @param currentPassword user's current password.
+     * @param newPassword user's new password.
+     * @return true if the request has been completed successfully.
+     * @throws InvalidClientSessionException  if the current client is not logged in as a Javagram user.
+     * @throws ClientOperationFailedException if the operation could not be completed successfully.
+     */
+    public boolean updatePassword(String currentPassword, String newPassword) throws ClientOperationFailedException {
+
+        boolean successful = false;
+
+        if (isSessionInitiated()) {
+
+            try {
+                this.serverOperationsFacade.updatePassword(this.userToken, currentPassword, newPassword);
+
+                successful = true;
+
+            } catch (RemoteException e) {
+                System.err.println("The server could not perform the requested password update operation");
+                e.printStackTrace();
+                throw new ClientOperationFailedException("The server could not perform the requested password " +
+                        "update");
+            }
+
+        } else {
+            System.err.println("No valid user session has been established yet");
+            throw new InvalidClientSessionException("No valid user session has been established yet");
+        }
+
+        return successful;
+    }
+
+    /**
      * Asks the Javagram server to terminate the session that was previously initiated. It also performs any needed
      * clean up to free any resources used by the currently logged in user.
      *

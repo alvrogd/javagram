@@ -125,6 +125,15 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
     }
 
     /**
+     * Calls {@link IServer#updatePassword(UserToken, String, String)}.
+     *
+     * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.
+     */
+    public void updatePassword(UserToken token, String passwordHash, String newPasswordHash) throws RemoteException {
+        this.javagramServer.updatePassword(token, passwordHash, newPasswordHash);
+    }
+
+    /**
      * Calls {@link IServer#disconnect(UserToken)}.
      *
      * @throws RemoteException if {@link #javagramServer} cannot complete the requested operation.

@@ -189,6 +189,46 @@ public class ServerFacade implements IServer {
      * {@inheritDoc}
      */
     @Override
+    public void updatePassword(UserToken token, String passwordHash, String newPasswordHash) throws
+            ServerOperationFailedException {
+
+        Connection connection = null;
+
+        try {
+            String username = this.currentSessionsManager.getUserFromSession(token);
+
+            connection = this.usersDAO.getConnection();
+
+            // Credentials are validated before updating the password
+            if (this.usersDAO.verifyUserCredentials(connection, username, passwordHash)) {
+                this.usersDAO.updateUserPassword(connection, username, newPasswordHash);
+            }
+
+            else {
+                throw new ServerOperationFailedException("The specified credentials are not valid");
+            }
+
+        } catch (InvalidUserTokenException e) {
+            System.err.println("An illegitimate token has been received");
+            e.printStackTrace();
+            throw new ServerOperationFailedException("Could not update the password of the specified user");
+
+        } catch (DaoOperationException e) {
+            System.err.println("Could not update the password of the specified user");
+            e.printStackTrace();
+            throw new ServerOperationFailedException("Could not update the password of the specified user");
+
+        } finally {
+            // If the previous steps have been completed successfully, the operations will seem successful to the
+            // client even if the connection cannot be closed
+            closeDaoConnection(connection);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void disconnect(UserToken token) throws ServerOperationFailedException {
 
         Connection connection = null;
@@ -219,6 +259,7 @@ public class ServerFacade implements IServer {
             System.err.println("Could not notify a given user's friends about him going offline");
             e.printStackTrace();
             throw new ServerOperationFailedException("Could not close the specified session");
+
         } finally {
             // If the previous steps have been completed successfully, the operations will seem successful to the
             // client even if the connection cannot be closed

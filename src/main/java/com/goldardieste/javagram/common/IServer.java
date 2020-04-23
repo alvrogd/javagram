@@ -39,6 +39,16 @@ public interface IServer extends Remote {
             throws RemoteException;
 
     /**
+     * Updates the user's current password.
+     *
+     * @param token identifies the user on whose behalf the operation will be performed.
+     * @param passwordHash hash of the user's current password.
+     * @param newPasswordHash hash of the user's new password.
+     * @throws RemoteException irrecoverable error during a remote procedure call.
+     */
+    void updatePassword(UserToken token, String passwordHash, String newPasswordHash) throws RemoteException;
+
+    /**
      * Terminates a session that was previously initiated.
      *
      * @param token {@link UserToken} that identifies the session which will be terminated.

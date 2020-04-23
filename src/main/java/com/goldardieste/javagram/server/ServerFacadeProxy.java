@@ -61,6 +61,15 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
      * {@inheritDoc}
      */
     @Override
+    public void updatePassword(UserToken token, String passwordHash, String newPasswordHash) throws
+            ServerOperationFailedException {
+        this.maskedServer.updatePassword(token, passwordHash, newPasswordHash);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void disconnect(UserToken token) throws ServerOperationFailedException {
         this.maskedServer.disconnect(token);
     }
@@ -83,6 +92,7 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
 
     /**
      * {@inheritDoc}
+     *
      * @return
      */
     @Override

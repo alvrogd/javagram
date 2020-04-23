@@ -284,6 +284,57 @@ public class UsersDAO {
     }
 
     /**
+     * Updates the stored password in the database for a specified user.
+     *
+     * @param connection   connection to the database through which the operations are performed.
+     * @param username     name by which the user will be identified.
+     * @param newPasswordHash hash of the user's new password.
+     * @throws DaoOperationException if the operation cannot be completed successfully.
+     */
+    public void updateUserPassword(Connection connection, String username, String newPasswordHash) throws
+            DaoOperationException {
+
+        // If the user already exists, a conflict due to the PK constraint will arise
+        String statement =
+                "UPDATE users SET password_hash=?, password_salt=? WHERE username=?";
+        PreparedStatement stm = null;
+
+        try {
+
+            stm = connection.prepareStatement(statement);
+
+            // Each user's password will have its own salt, and it will be secured using its salt
+            byte[] passwordSalt = CryptographicServices.generatePasswordSalt();
+            byte[] hash = CryptographicServices.hashString(newPasswordHash, passwordSalt);
+
+            // Data is stored in the database using Base64
+            stm.setString(1, CryptographicServices.StringBase64FromBytes(hash));
+            stm.setString(2, CryptographicServices.StringBase64FromBytes(passwordSalt));
+            stm.setString(3, username);
+
+            stm.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            System.err.println("Could not update the password of the specified user");
+            throw new DaoOperationException(e);
+
+        } finally {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (stm != null) stm.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Retrieves a collection that contains all the users that the specified one is related to in any way. That is, the
      * retrieved remote users may be current friends of the local one, they may have sent him a friendship request, or
      * the may also received a friendship request from him.

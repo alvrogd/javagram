@@ -87,7 +87,7 @@ public class InputNewFriendController {
     @FXML
     public void sendFriendshipRequest(Event e) {
 
-        // The previous warning is hidden while the request is handled
+        // Any previous warning is hidden while the request is handled
         this.labelWarning.setVisible(false);
 
         String username = this.inputNewFriend.getText().trim();

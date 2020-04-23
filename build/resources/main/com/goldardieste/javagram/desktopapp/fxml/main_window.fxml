@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="rootContainer" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="rootContainer" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.MainWindowController">
    <children>
       <VBox fx:id="sidebarMenu" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720.0" prefWidth="80.0" styleClass="sidebarMenuContainer">
          <children>
@@ -102,6 +102,28 @@
                <styleClass>
                   <String fx:value="sidebarMenuItem" />
                   <String fx:value="sidebarMenuItemNewFriend" />
+               </styleClass>
+            </HBox>
+            <HBox fx:id="menuOptionUpdatePassword" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#showChangePasswordInput" prefHeight="80.0" prefWidth="80.0" stylesheets="@../stylesheets/main_window.css">
+               <children>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="80.0">
+                     <children>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="80.0">
+                           <children>
+                              <Button mnemonicParsing="false" onMouseClicked="#showChangePasswordInput" styleClass="imageHolder" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="80.0">
+                           <children>
+                              <Label text="New passwd" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <styleClass>
+                  <String fx:value="sidebarMenuItem" />
+                  <String fx:value="sidebarMenuItemPassword" />
                </styleClass>
             </HBox>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#logout" prefHeight="80.0" prefWidth="80.0" stylesheets="@../stylesheets/main_window.css">

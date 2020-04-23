@@ -59,6 +59,14 @@
     -fx-graphic: url(../icons/new_friend_icon_selected.png);
 }
 
+.sidebarMenuItemPassword .button {
+    -fx-graphic: url(../icons/lock_icon.png);
+}
+
+.sidebarMenuItemPasswordSelected .button {
+    -fx-graphic: url(../icons/lock_icon_selected.png);
+}
+
 .sidebarMenuItemLogout .button {
     -fx-graphic: url(../icons/logout_icon.png);
 }

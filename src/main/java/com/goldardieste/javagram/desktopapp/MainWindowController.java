@@ -73,18 +73,18 @@ public class MainWindowController extends AbstractController implements LocalTun
 
     /**
      * If it is set to true, the user's entries will not be rendered no matter what, as their place is being taken by
-     * the input where the user may send a new friendship request.
+     * the input where the user may send a new friendship request, or where the user may change his current password.
      * <p>
      * It is only modified by the JavaFX thread; other threads may read it.
      */
-    private boolean newFriendshipInputActive;
+    private boolean overlappedInputActive;
 
     /**
-     * This lock must be acquired to read/modify {@link #newFriendshipInputActive}. Even though all events from JavaFX
+     * This lock must be acquired to read/modify {@link #overlappedInputActive}. Even though all events from JavaFX
      * are dispatched using a single thread, as the notifications about remote users can be received and displayed at
      * any time due to {@link RemoteUsersListener}, there could be race conditions if it where not for this lock.
      */
-    private final ReentrantLock newFriendshipInputLock;
+    private final ReentrantLock overlappingInputLock;
 
 
     /* ----- FXML attributes ----- */
@@ -112,6 +112,12 @@ public class MainWindowController extends AbstractController implements LocalTun
      */
     @FXML
     private HBox menuOptionNewFriend;
+
+    /**
+     * Left menu's option to show the menu to change the user's current password.
+     */
+    @FXML
+    private HBox menuOptionUpdatePassword;
 
     /**
      * Where each possible user entry resides.
@@ -158,8 +164,8 @@ public class MainWindowController extends AbstractController implements LocalTun
     public MainWindowController() {
         this.retrievedRemoteUsers = new HashMap<>();
         this.initiatedChats = new HashMap<>();
-        this.newFriendshipInputActive = false;
-        this.newFriendshipInputLock = new ReentrantLock();
+        this.overlappedInputActive = false;
+        this.overlappingInputLock = new ReentrantLock();
 
         this.userEntriesFilter = UserEntriesFilter.NONE;
     }
@@ -217,9 +223,9 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         this.userEntriesFilter = UserEntriesFilter.NONE;
 
-        this.newFriendshipInputLock.lock();
-        this.newFriendshipInputActive = false;
-        this.newFriendshipInputLock.unlock();
+        this.overlappingInputLock.lock();
+        this.overlappedInputActive = false;
+        this.overlappingInputLock.unlock();
 
         synchronized (this.retrievedRemoteUsers) {
             regenerateUserEntries();
@@ -238,9 +244,9 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         this.userEntriesFilter = UserEntriesFilter.CURRENT_FRIENDS;
 
-        this.newFriendshipInputLock.lock();
-        this.newFriendshipInputActive = false;
-        this.newFriendshipInputLock.unlock();
+        this.overlappingInputLock.lock();
+        this.overlappedInputActive = false;
+        this.overlappingInputLock.unlock();
 
         synchronized (this.retrievedRemoteUsers) {
             regenerateUserEntries();
@@ -259,9 +265,9 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         this.userEntriesFilter = UserEntriesFilter.REQUESTS;
 
-        this.newFriendshipInputLock.lock();
-        this.newFriendshipInputActive = false;
-        this.newFriendshipInputLock.unlock();
+        this.overlappingInputLock.lock();
+        this.overlappedInputActive = false;
+        this.overlappingInputLock.unlock();
 
         synchronized (this.retrievedRemoteUsers) {
             regenerateUserEntries();
@@ -292,11 +298,11 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         ObservableList<Node> entries = this.sidebarItems.getChildren();
 
-        this.newFriendshipInputLock.lock();
+        this.overlappingInputLock.lock();
 
         try {
             // So that the user entries do not override
-            this.newFriendshipInputActive = true;
+            this.overlappedInputActive = true;
 
             entries.clear();
 
@@ -313,14 +319,14 @@ public class MainWindowController extends AbstractController implements LocalTun
             exception.printStackTrace();
 
         } finally {
-            this.newFriendshipInputLock.unlock();
+            this.overlappingInputLock.unlock();
         }
 
         updateMenuOptionsHighlighting(3);
     }
 
     /**
-     * Sends a friendship request to the specified remote user, and shows again all the user entries.
+     * Sends a friendship request to the specified remote user, and shows again all the user entries if successful.
      *
      * @param remoteUser name by which the remote user can be identified.
      * @return if the request could be sent successfully.
@@ -329,25 +335,95 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         boolean successful = false;
 
-        this.newFriendshipInputLock.lock();
+        this.overlappingInputLock.lock();
 
         try {
             this.clientFacade.requestFriendship(remoteUser);
 
             // If the request is successfully sent, the user entries are shown again
-            this.newFriendshipInputActive = false;
+            this.overlappedInputActive = false;
             successful = true;
 
         } catch (ClientOperationFailedException exception) {
             exception.printStackTrace();
 
         } finally {
-            this.newFriendshipInputLock.unlock();
+            this.overlappingInputLock.unlock();
         }
 
         // So that the user sees instantly that the request has been sent
         if (successful) {
             activateFilterRequests(null);
+        }
+
+        return successful;
+    }
+
+    /**
+     * Shows an input where the user may change his current password.
+     *
+     * @param e associated {@link Event}.
+     */
+    @FXML
+    public void showChangePasswordInput(Event e) {
+
+        ObservableList<Node> entries = this.sidebarItems.getChildren();
+
+        this.overlappingInputLock.lock();
+
+        try {
+            // So that the user entries do not override
+            this.overlappedInputActive = true;
+
+            entries.clear();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/input_change_password.fxml"));
+
+            entries.add(loader.load());
+
+            InputChangePasswordController controller = loader.getController();
+            controller.setMainWindowController(this);
+
+        } catch (IOException exception) {
+            exception.printStackTrace();
+
+        } finally {
+            this.overlappingInputLock.unlock();
+        }
+
+        updateMenuOptionsHighlighting(4);
+    }
+
+    /**
+     * Updates the password of the current user, and shows again all the user entries if successful.
+     *
+     * @param currentPassword password given as the user's current password.
+     * @param newPassword password given as the user's new password.
+     * @return if the password could be changed successfully.
+     */
+    public boolean updatePassword(String currentPassword, String newPassword) {
+
+        boolean successful = false;
+
+        this.overlappingInputLock.lock();
+
+        try {
+            this.clientFacade.updatePassword(currentPassword, newPassword);
+
+            // If the password has been successfully changed, the user entries are shown again
+            this.overlappedInputActive = false;
+            successful = true;
+
+        } catch (ClientOperationFailedException exception) {
+            exception.printStackTrace();
+
+        } finally {
+            this.overlappingInputLock.unlock();
+        }
+
+        // All users will be now shown
+        if (successful) {
+            removeFilter(null);
         }
 
         return successful;
@@ -422,6 +498,21 @@ public class MainWindowController extends AbstractController implements LocalTun
         } else {
             styles.remove("sidebarMenuItemSelected");
             styles.remove("sidebarMenuItemNewFriendSelected");
+        }
+
+        // 4 -> change password
+        styles = this.menuOptionUpdatePassword.getStyleClass();
+
+        if (indexHighlight == 4) {
+            if (!styles.contains("sidebarMenuItemSelected")) {
+                styles.add("sidebarMenuItemSelected");
+            }
+            if (!styles.contains("sidebarMenuItemPasswordSelected")) {
+                styles.add("sidebarMenuItemPasswordSelected");
+            }
+        } else {
+            styles.remove("sidebarMenuItemSelected");
+            styles.remove("sidebarMenuItemPasswordSelected");
         }
     }
 
@@ -824,10 +915,10 @@ public class MainWindowController extends AbstractController implements LocalTun
 
             ObservableList<Node> entries = this.sidebarItems.getChildren();
 
-            this.newFriendshipInputLock.lock();
+            this.overlappingInputLock.lock();
 
             try {
-                if (!this.newFriendshipInputActive) {
+                if (!this.overlappedInputActive) {
 
                     entries.clear();
 
@@ -887,7 +978,7 @@ public class MainWindowController extends AbstractController implements LocalTun
                     this.messagesScrollPane.setVvalue(1.0);
                 }
             } finally {
-                this.newFriendshipInputLock.unlock();
+                this.overlappingInputLock.unlock();
             }
 
             updateMessageArea();

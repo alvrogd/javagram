@@ -72,6 +72,11 @@ public class MainWindowController extends AbstractController implements LocalTun
     private UserEntryController currentSelectedEntry;
 
     /**
+     * Contains, for each remote user, how many messages he has send and that have not been read yet by the client.
+     */
+    private final Map<String, Integer> unreadMessagesCount;
+
+    /**
      * If it is set to true, the user's entries will not be rendered no matter what, as their place is being taken by
      * the input where the user may send a new friendship request, or where the user may change his current password.
      * <p>
@@ -164,6 +169,7 @@ public class MainWindowController extends AbstractController implements LocalTun
     public MainWindowController() {
         this.retrievedRemoteUsers = new HashMap<>();
         this.initiatedChats = new HashMap<>();
+        this.unreadMessagesCount = new HashMap<>();
         this.overlappedInputActive = false;
         this.overlappingInputLock = new ReentrantLock();
 
@@ -546,17 +552,22 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         synchronized (this.retrievedRemoteUsers) {
 
+            // Shows the chat history with the selected user, if any
             initiateAndShowChat(remoteUser);
 
-            // The previous selected entry is no longer highlighted, in favour of the new one
-            if (this.currentSelectedEntry != null) {
-                this.currentSelectedEntry.removeHighlighting();
+            // If the current selected entry had any not-read-messages counter, it gets reset as the corresponding
+            // message history will be rendered
+            Integer counter = this.unreadMessagesCount.get(remoteUser);
+
+            if(counter != null) {
+                this.unreadMessagesCount.put(remoteUser, 0);
             }
 
             this.currentSelectedEntry = userEntryController;
-            this.currentSelectedEntry.addHighlighting();
 
-            updateMessageArea();
+            // This method updates the message input area and puts highlighting to the appropriate entry
+            // TODO highly inefficient
+            regenerateUserEntries();
         }
     }
 
@@ -743,6 +754,20 @@ public class MainWindowController extends AbstractController implements LocalTun
 
         // TODO enhance
         registerMessageInChatHistory(remoteUser, message, false);
+
+        synchronized (this.retrievedRemoteUsers) {
+
+            // The remote user's counter is also incremented if his entry is not currently selected
+            if(this.currentSelectedEntry == null || !this.currentSelectedEntry.getUsername().equals(remoteUser)) {
+
+                Integer counter = this.unreadMessagesCount.get(remoteUser);
+
+                int newValue = (counter != null ? counter : 0) + 1;
+                this.unreadMessagesCount.put(remoteUser, newValue);
+
+                regenerateUserEntries();
+            }
+        }
     }
 
     /**
@@ -937,8 +962,11 @@ public class MainWindowController extends AbstractController implements LocalTun
 
                                 UserEntryController controller = loader.getController();
 
+                                // If the corresponding user has any not-read-messages counter, it also gets shown
+                                Integer counter = this.unreadMessagesCount.get(remoteUser.getUsername());
+
                                 controller.updateContents(remoteUser.getUsername(), remoteUser.getUsername(),
-                                        remoteUser.getStatus().toString());
+                                        remoteUser.getStatus().toString(), counter != null ? counter : 0);
                                 controller.setMainWindowController(this);
 
                                 // Due to removing all entries to generate them again in every minor change, the one

@@ -44,16 +44,17 @@ public class UserEntryController {
     private Label header;
 
     /**
-     * Text shown at the top-right.
-     */
-    @FXML
-    private Label time;
-
-    /**
      * Text shown at the bottom-left.
      */
     @FXML
     private Label description;
+
+    /**
+     * Text shown at the top-right.
+     */
+    @FXML
+    private Label counter;
+
 
 
     /* ----- Constructor ----- */
@@ -89,17 +90,25 @@ public class UserEntryController {
     /* ----- Methods ----- */
 
     /**
-     * Updates the view's contents using the given data. Sets the current time in the corresponding field.
+     * Updates the view's contents using the given data, and updates the value of {@link #username}.
      *
-     * @param username    name by which the user can be identified.
+     * @param username    the new value for {@link #username}.
      * @param header      the new header's contents.
      * @param description the new description's contents.
+     * @param counter     the new counter's value.
      */
-    public void updateContents(String username, String header, String description) {
+    public void updateContents(String username, String header, String description, int counter) {
 
         this.username = username;
         this.header.setText(header);
         this.description.setText(description);
+
+        if(counter > 0) {
+            this.counter.setText(String.valueOf(counter));
+        }
+        else {
+            this.counter.setVisible(false);
+        }
     }
 
     /**

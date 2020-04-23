@@ -93,7 +93,7 @@
     -fx-text-fill: #FFFFFF;
 }
 
-.sidebarItem .descriptionText, .sidebarItem .dateText {
+.sidebarItem .descriptionText {
     -fx-font-size: 12px;
     -fx-text-fill: #6F8091;
 }
@@ -115,8 +115,8 @@
     -fx-background-color: #202b36;
 }
 
-.sidebarItemSelected .descriptionText, .sidebarItemSelected .dateText,
-.sidebarItem:hover .descriptionText, .sidebarItem:hover .dateText {
+.sidebarItemSelected .descriptionText,
+.sidebarItem:hover .descriptionText {
     -fx-font-size: 12px;
     -fx-text-fill: #FFFFFF;
 }
@@ -134,6 +134,17 @@
     -fx-background-color: #202b36;
 }
 
+.counter {
+    -fx-font-size: 12px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3e546a;
+    -fx-background-insets: -4 -7 -4 -7;
+    -fx-background-radius: 4em;
+}
+
+.sidebarItem:hover .counter {
+    -fx-background-color: #4082bc;
+}
 /* ----- END ----- */
 
 

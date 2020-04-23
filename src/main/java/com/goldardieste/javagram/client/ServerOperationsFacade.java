@@ -2,11 +2,15 @@ package com.goldardieste.javagram.client;
 
 import com.goldardieste.javagram.common.*;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.PublicKey;
 import java.util.List;
@@ -66,7 +70,8 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
      */
     public ServerOperationsFacade(String rmiRemoteAddress, int rmiRemotePort, String javagramServerIdentifier,
                                   ClientFacade clientFacade) throws RemoteException, IllegalStateException {
-        super();
+        // TLS connections; port = 0 -> ephemeral port
+        super(0, new SslRMIClientSocketFactory(), new SslRMIServerSocketFactory());
         this.clientFacade = clientFacade;
 
         this.rmiRemoteAddress = rmiRemoteAddress;
@@ -86,22 +91,15 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
      */
     private IServer retrieveJavagramServer() throws IllegalStateException {
 
-        String url = "rmi://" + this.rmiRemoteAddress + ":" + this.rmiRemotePort + "/" + this.javagramServerIdentifier;
-        System.out.println(url);
-
         try {
-            return (IServer) Naming.lookup(url);
+            // TLS connections; host = null -> localhost
+            Registry registry = LocateRegistry.getRegistry(this.rmiRemoteAddress, this.rmiRemotePort,
+                    new SslRMIClientSocketFactory());
 
-        } catch (NotBoundException e) {
-            System.err.println("The following remote object could not be found: " + url);
-            throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
+            return (IServer) registry.lookup(this.javagramServerIdentifier);
 
-        } catch (MalformedURLException e) {
-            System.err.println("\"Naming.rebind\" received the following malformed URL: " + url);
-            throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
-
-        } catch (RemoteException e) {
-            System.err.println("The RMI registry could not be contacted: " + url);
+        } catch (RemoteException | NotBoundException e) {
+            System.err.println("The following remote object could not be found: " + this.javagramServerIdentifier);
             throw new IllegalStateException("No remote Javagram server object could be retrieved", e);
         }
     }
@@ -208,6 +206,7 @@ public class ServerOperationsFacade extends UnicastRemoteObject implements IServ
 
     /**
      * {@inheritDoc}
+     *
      * @return
      */
     @Override

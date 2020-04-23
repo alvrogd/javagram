@@ -3,6 +3,8 @@ package com.goldardieste.javagram.client;
 import com.goldardieste.javagram.client.cryptography.CommunicationDecryptionUtility;
 import com.goldardieste.javagram.common.IRemoteUserTunnel;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -39,7 +41,8 @@ public class LocalUserTunnel extends UnicastRemoteObject implements IRemoteUserT
      * @throws RemoteException the remote object cannot be successfully exported.
      */
     public LocalUserTunnel(String remoteUser) throws RemoteException {
-        super();
+        // TLS connections; port = 0 -> ephemeral port
+        super(0, new SslRMIClientSocketFactory(), new SslRMIServerSocketFactory());
         this.remoteUser = remoteUser;
     }
 

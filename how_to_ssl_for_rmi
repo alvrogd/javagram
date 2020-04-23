@@ -1,0 +1,28 @@
+STEPS:
+
+1. Generate keys and certificate for the server.
+2. Import the server's certificate into the client's truststore.
+3. Generate keys and certificate for the client.
+4. Import the client's certificate into the server's truststore -> callbacks.
+5. Import the client's certificate intp the client's truststore -> direct communication between clients.
+
+
+
+EXAMPLE:
+
+# Generates server's keystore with public/private keys
+
+keytool -genkeypair -alias javagramkeys -keyalg RSA -validity 365 -keystore javagram_keystore.ks
+
+# Verifies that the keystore has been successfully created
+
+keytool -list -v -keystore javagram_keystore.ks
+
+# Exports a certificate file from the keystore
+
+keytool -export -alias javagramkeys -keystore javagram_keystore.ks -rfc -file javagram_certificate.cer
+
+# Imports the certificate into a truststore -> the client's truststore must trust the server's keystore
+
+keytool -import -alias javagramcertificate -file javagram_certificate.cer -keystore javagram_truststore.ks
+

@@ -2,6 +2,8 @@ package com.goldardieste.javagram.server;
 
 import com.goldardieste.javagram.common.*;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.PublicKey;
@@ -32,7 +34,8 @@ public class ServerFacadeProxy extends UnicastRemoteObject implements IServer {
      * @throws RemoteException the remote object cannot be successfully exported.
      */
     public ServerFacadeProxy(ServerFacade serverFacade) throws RemoteException {
-        super();
+        // TLS connections; port = 0 -> ephemeral port
+        super(0, new SslRMIClientSocketFactory(), new SslRMIServerSocketFactory());
         this.maskedServer = serverFacade;
     }
 

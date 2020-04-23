@@ -1,5 +1,7 @@
 package com.goldardieste.javagram.server;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -62,18 +64,13 @@ public class RMIRegistry {
             startRMIRegistry();
 
             // The remote object is stored in the registry, so that it may be remotely used
-            Naming.rebind("rmi://localhost:" + this.port + "/" + identifier, this.exportedServer);
+            this.rmiRegistry.rebind(identifier, this.exportedServer);
 
             System.out.println("The Javagram server is now available at the RMI registry using using the name: " +
                     identifier);
 
         } catch (RemoteException e) {
             System.err.println("The RMI registry could not be initialized/contacted");
-            e.printStackTrace();
-
-        } catch (MalformedURLException e) {
-            System.err.println("\"Naming.rebind\" received the following malformed URL: " + "rmi://localhost:" +
-                    this.port + "/" + identifier);
             e.printStackTrace();
         }
     }
@@ -91,7 +88,9 @@ public class RMIRegistry {
         try {
             // Firstly, a quick check is performed to determine if the desired RMI registry already exists
             // Calling "list" if the registry does not already exist will throw an exception
-            (LocateRegistry.getRegistry(this.port)).list();
+            // TLS connections; host = null -> localhost
+            this.rmiRegistry = LocateRegistry.getRegistry(null, this.port, new SslRMIClientSocketFactory());
+            this.rmiRegistry.list();
         }
 
         // If no registry is found
@@ -100,7 +99,9 @@ public class RMIRegistry {
 
             // A new one is created. Its reference is also stored so that the object may close it when finishing its
             // execution
-            this.rmiRegistry = LocateRegistry.createRegistry(this.port);
+            // TLS connections
+            this.rmiRegistry = LocateRegistry.createRegistry(this.port, new SslRMIClientSocketFactory(),
+                    new SslRMIServerSocketFactory());
             System.out.println("RMI registry initialized at port: " + this.port);
         }
     }
@@ -115,7 +116,7 @@ public class RMIRegistry {
             // 1. Removing the Javagram server from the RMI registry
 
             // First of all, the link with its identifier is destroyed
-            Naming.unbind("rmi://localhost:" + this.port + "/" + this.identifier);
+            this.rmiRegistry.unbind(this.identifier);
 
             // It is also requested to end its execution
             ((ServerFacadeProxy) this.exportedServer).haltExecution();
@@ -138,10 +139,6 @@ public class RMIRegistry {
         } catch (NotBoundException e) {
             System.err.println("The specified Javagram server is not bound to the given RMI registry: " +
                     "rmi://localhost:" + this.port + "/" + identifier);
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            System.err.println("\"Naming.unbind\" received the following malformed URL: " + "rmi://localhost:" +
-                    this.port + "/" + identifier);
             e.printStackTrace();
         }
 

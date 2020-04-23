@@ -20,6 +20,10 @@ grant {
     permission java.sql.SQLPermission "setNetworkTimeout";
     permission java.util.PropertyPermission "org.postgresql.forceBinary", "read";
 
+    // SSL
+    permission java.util.PropertyPermission "javax.rmi.ssl.client.enabledCipherSuites", "read";
+    permission java.util.PropertyPermission "javax.rmi.ssl.client.enabledProtocols", "read";
+
     // Common
     permission java.lang.RuntimePermission "modifyThread";
     permission java.lang.RuntimePermission "getClassLoader";

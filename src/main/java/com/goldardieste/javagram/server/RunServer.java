@@ -9,6 +9,12 @@ public class RunServer {
 
     public static void main(String[] args) throws IOException {
 
+        // SSL configuration
+        System.setProperty("javax.net.ssl.keyStore", "./build/resources/main/com/goldardieste/javagram/server/javagram_keystore.ks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "javagram");
+        System.setProperty("javax.net.ssl.trustStore", "./build/resources/main/com/goldardieste/javagram/server/javagram_truststore.ks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "javagram");
+
         // Security manager
         System.setProperty("java.security.policy", "file:./build/resources/main/com/goldardieste/javagram/server/java.policy");
         System.setSecurityManager(new SecurityManager());

@@ -33,6 +33,12 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
 
+        // SSL configuration
+        System.setProperty("javax.net.ssl.keyStore", "./build/resources/main/com/goldardieste/javagram/client/javagram_client_keystore.ks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "javagram");
+        System.setProperty("javax.net.ssl.trustStore", "./build/resources/main/com/goldardieste/javagram/client/javagram_truststore.ks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "javagram");
+
         // Security manager
         System.setProperty("java.security.debug", "access,failure,policy");
         System.setProperty("java.security.policy", "file:./build/resources/main/com/goldardieste/javagram/client/java.policy");

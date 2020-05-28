@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 import java.security.PublicKey;
 import java.util.concurrent.locks.ReentrantLock;
 
-// TODO catch and throw exception when the server is not reachable
+// TODO catch and throw ClientOperationFailedException when the server is not reachable
 
 /**
  * This class holds the main logic of the Javagram client. Therefore, it orchestrates any operation that the user may
@@ -151,6 +151,9 @@ public class ClientFacade implements IServerNotificationsListener {
      * @throws ClientOperationFailedException if the operation could not be completed successfully.
      */
     public boolean login(String username, String password) throws ClientOperationFailedException {
+
+        // TODO the user's password could be hashed before sending it to the server, in order to achieve greater
+        //  privacy
 
         if (!isSessionInitiated()) {
 

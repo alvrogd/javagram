@@ -33,6 +33,7 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
 
+        // TODO these paths will break when moving to another environment
         // SSL configuration
         System.setProperty("javax.net.ssl.keyStore", "./build/resources/main/com/goldardieste/javagram/client/javagram_client_keystore.ks");
         System.setProperty("javax.net.ssl.keyStorePassword", "javagram");

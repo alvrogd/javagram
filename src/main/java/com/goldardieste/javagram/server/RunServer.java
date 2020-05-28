@@ -9,6 +9,7 @@ public class RunServer {
 
     public static void main(String[] args) throws IOException {
 
+        // TODO these paths will break when moving to another environment
         // SSL configuration
         System.setProperty("javax.net.ssl.keyStore", "./build/resources/main/com/goldardieste/javagram/server/javagram_keystore.ks");
         System.setProperty("javax.net.ssl.keyStorePassword", "javagram");

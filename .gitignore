@@ -94,3 +94,5 @@
 
 .gradle
 .idea
+build
+out

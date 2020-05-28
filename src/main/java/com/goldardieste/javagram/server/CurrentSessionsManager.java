@@ -5,14 +5,14 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.goldardieste.javagram.common.UserToken;
+import com.goldardieste.javagram.common.datacontainers.UserToken;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class will take the responsibility for creating, verifying and deleting the session
- * ({@link com.goldardieste.javagram.common.UserToken}) that all clients must use so that the server can verify their
+ * ({@link UserToken}) that all clients must use so that the server can verify their
  * identity when requesting any operation.
  */
 public class CurrentSessionsManager {

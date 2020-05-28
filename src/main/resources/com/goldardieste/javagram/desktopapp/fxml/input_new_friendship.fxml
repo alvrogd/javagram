@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="326.0" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.InputNewFriendController">
+<VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="326.0" stylesheets="@../stylesheets/main_window.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.identifieduser.InputNewFriendController">
    <children>
       <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="240.0" prefWidth="200.0" />
       <HBox>

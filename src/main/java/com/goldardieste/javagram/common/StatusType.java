@@ -1,5 +1,7 @@
 package com.goldardieste.javagram.common;
 
+import com.goldardieste.javagram.common.datacontainers.RemoteUser;
+
 /**
  * This class contains all the possible states that a {@link RemoteUser} may be in.
  */

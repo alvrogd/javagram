@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="600.0" styleClass="rootContainer" stylesheets="@../stylesheets/session_window.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.SessionDataWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="600.0" styleClass="rootContainer" stylesheets="@../stylesheets/session_window.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goldardieste.javagram.desktopapp.unidentifieduser.SessionDataWindowController">
    <children>
       <Label alignment="CENTER" layoutY="160.0" prefHeight="20.0" prefWidth="600.0" styleClass="javagramTitle" text="Javagram" textAlignment="CENTER" />
       <TextField fx:id="fieldUsername" layoutX="175.0" layoutY="302.0" onKeyReleased="#checkUsername" prefHeight="28.0" prefWidth="250.0" promptText="Username" styleClass="sessionDataInput, sessionDataInputValid" />

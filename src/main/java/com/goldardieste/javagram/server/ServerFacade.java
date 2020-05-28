@@ -1,6 +1,17 @@
 package com.goldardieste.javagram.server;
 
 import com.goldardieste.javagram.common.*;
+import com.goldardieste.javagram.common.datacontainers.NewChatData;
+import com.goldardieste.javagram.common.datacontainers.RemoteUser;
+import com.goldardieste.javagram.common.datacontainers.UserToken;
+import com.goldardieste.javagram.common.exceptions.ServerOperationFailedException;
+import com.goldardieste.javagram.common.interfaces.IRemoteUserTunnel;
+import com.goldardieste.javagram.common.interfaces.IServer;
+import com.goldardieste.javagram.common.interfaces.IServerNotificationsListener;
+import com.goldardieste.javagram.server.dao.DaoOperationException;
+import com.goldardieste.javagram.server.dao.RemoteUserDao;
+import com.goldardieste.javagram.server.dao.StatusTypeUserDAO;
+import com.goldardieste.javagram.server.dao.UsersDAO;
 
 import java.rmi.RemoteException;
 import java.security.PublicKey;

@@ -52,7 +52,7 @@ public class AbstractController {
      */
     public AbstractController loadNewScene(String fxmlFile) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/" + fxmlFile + ".fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();
         AbstractController controller = loader.getController();
 

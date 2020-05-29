@@ -85,6 +85,22 @@ A Javagram user is able to:
 * **Communication between two clients' backends** is end-to-end encrypted using a combination of **RSA + AES**.
   - The secret used to encrypt the communication between them will be regenerated each time anyone of them goes offline and comes back.
 
+### Watch some features in motion
+
+_**Note:** the corresponding GIFs may take some time to load depending on your connection._
+
+#### Logging into the service
+
+![Logging into the service - Demo](readme_resources/feat_login.gif)
+
+#### Establishing a new friendship
+
+![Establishing a new friendship - Demo](readme_resources/feat_newFriend.gif)
+
+#### Two users communicating in real time
+
+![Two users communicating in real time - Demo](readme_resources/feat_communication.gif)
+
 ## Getting started
 
 To experiment with this service, start by **downloading or cloning this repository**.

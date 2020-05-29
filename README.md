@@ -1,6 +1,6 @@
 # Javagram
 
-Javagram is a **centralized P2P and instant messaging service** written in Java. It heavily relies on the Java RMI technology.
+Javagram is a **centralized P2P instant messaging service** written in Java. It heavily relies on the Java RMI technology.
 
 ## Modules
 

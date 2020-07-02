@@ -10,7 +10,7 @@ Javagram is composed of the **three following modules**:
 
 * A **client backend** which provides the GUI app with the required services to communicate with the server and with another clients' backends.
 
-* A **GUI app** which acts as a mediator between the actual user and the client's backend.
+* A **GUI app** which acts as a mediator between the actual (physical) user and the client's backend.
 
 ### Server module
 
@@ -68,7 +68,7 @@ A Javagram user is able to:
   - See which friends are currently online.
 
 * **Communicate directly with another Javagram users** that are logged into the same Javagram server:
-  - Communication between two users is restricted to text messages of any length.
+  - Communication between two users is restricted to text messages of any desired length.
   - The communication's data is sent directly from one user to another. Therefore, no data is stored in the server to further increase privacy.
   - Besides that, no data is stored in the user's clients. That is, a user loses all received messages after logging out.
 
@@ -85,7 +85,7 @@ A Javagram user is able to:
 * **Communication between two clients' backends** is end-to-end encrypted using a combination of **RSA + AES**.
   - The secret used to encrypt the communication between them will be regenerated each time anyone of them goes offline and comes back.
 
-### Watch some features in motion
+### Showcasing some features through the GUI app
 
 _**Note:** the corresponding GIFs may take some time to load depending on your connection._
 
@@ -103,7 +103,7 @@ _**Note:** the corresponding GIFs may take some time to load depending on your c
 
 ## Getting started
 
-To experiment with this service, start by **downloading or cloning this repository**.
+In order to try out this service, start by **downloading or cloning this repository**.
 
 ### Prerequisites
 
@@ -142,12 +142,13 @@ Once the Javagram server is ready to provide clients with the Javagram services,
 
 2. Initialize the client's backend that will provide the GUI with any required services.
 
-After successfully running the client, the user will need to **either register as a new Javagram user** (the user is automatically logged in), **or to log in** as an already existing user. At last, the GUI's main window will be shown, and the user will now be ready to communicate with another users!
+After successfully running the client, the user will need to **either register as a new Javagram user** (the user is automatically logged in after this), **or to log in** as an already existing user. At last, the GUI's main window will be shown, and the user will now be ready to communicate with another users!
 
 ## Built With
 
 * [Java 11](https://adoptopenjdk.net/) - Heavily relying on its Java RMI technology.
 * [JavaFX 11](https://openjfx.io/index.html) - Upon which the GUI is built.
+* [Scene Builder](https://gluonhq.com/products/scene-builder/) - Which has eased the development of the GUI.
 * [Java JWT](https://github.com/auth0/java-jwt) - An implementation of JSON Web Tokens in Java.
 * [PostgreSQL](https://www.postgresql.org/) - The database which the Javagram server was configured to used.
 * [HikariCP](https://github.com/brettwooldridge/HikariCP) - The JDBC connection pool on which the server relies to communicate multiple times in parallel with the database.
